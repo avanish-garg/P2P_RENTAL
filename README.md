@@ -1,8 +1,4 @@
 
-Here’s the full text for your README.md file. You can copy and paste it directly:
-
-markdown
-Copy code
 # **Decentralized Peer-to-Peer Rental System for Everyday Items**
 
 ## **Project Description**
@@ -36,8 +32,7 @@ cd P2P_RENTAL
 2. Install Dependencies
 Install project dependencies for the blockchain environment:
 
-bash
-Copy code
+
 npm install
 3. Configure Environment Variables
 Create a .env file in the root directory with the following:
@@ -49,13 +44,13 @@ PRIVATE_KEY=your_wallet_private_key_here
 POLYGONSCAN_API_KEY=your_polygonscan_api_key_here
 4. Compile the Smart Contract
 bash
-Copy code
+
 npx hardhat compile
 5. Deploy the Smart Contract
 To deploy the smart contract to Polygon Mumbai Testnet:
 
 bash
-Copy code
+
 npx hardhat run scripts/deploy.js --network mumbai
 Project Progress
 Day 1-2
@@ -85,7 +80,7 @@ Contact
 For questions or feedback, please contact Avanish Garg.
 
 yaml
-Copy code
+
 
 ---
 
@@ -98,7 +93,7 @@ Open the file with a text editor and paste the above content.
 Save the file and commit it to your repository:
 
 bash
-Copy code
+
 git add README.md
 git commit -m "Add project README file"
 git push origin main
