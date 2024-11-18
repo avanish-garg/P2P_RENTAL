@@ -1,0 +1,15 @@
+{
+  "name": "p2p_rental",
+  "version": "1.0.0",
+  "description": "Decentralized Peer-to-Peer Rental System leveraging blockchain technology for secure, transparent, and decentralized escrow-based rentals.",
+  "main": "hardhat.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "npx hardhat compile",
+    "deploy": "npx hardhat run scripts/deploy.js --network amoy",
+    "verify": "npx hardhat verify --network amoy"
+  },
+  "keywords": ["web3", "blockchain", "smart-contracts", "rental-system"],
+  "author": "Avanish Garg",
+  "license": "MIT"
+}
