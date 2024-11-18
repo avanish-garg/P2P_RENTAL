@@ -77,23 +77,10 @@ License
 This project is licensed under the MIT License.
 
 Contact
-For questions or feedback, please contact Avanish Garg.
+For questions or feedback, please contact Avanish Garg --- gargavanish@gmail.com.
 
 yaml
 
 
 ---
 
-### **Steps to Add the README File**
-1. Create the README file:
-   ```bash
-   touch README.md
-Open the file with a text editor and paste the above content.
-
-Save the file and commit it to your repository:
-
-bash
-
-git add README.md
-git commit -m "Add project README file"
-git push origin main
