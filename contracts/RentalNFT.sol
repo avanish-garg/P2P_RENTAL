@@ -7,7 +7,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract RentalNFT is ERC721, Ownable {
     uint256 private _tokenIdCounter;
 
-    constructor() ERC721("RentalNFT", "RNT") {}
+    constructor() ERC721("RentalNFT", "RNT") Ownable(msg.sender) {
+        _tokenIdCounter = 0;
+    }
 
     function mintNFT(address to) public onlyOwner {
         _tokenIdCounter++;
