@@ -14,6 +14,7 @@ contract RentalNFT is ERC721, Ownable {
     }
 
     mapping(uint256 => Rental) public rentals;
+    mapping(address => uint256) public escrow;
 
     uint256 private _tokenIdCounter;
 
@@ -44,11 +45,17 @@ contract RentalNFT is ERC721, Ownable {
         require(msg.value == rentals[tokenId].deposit, "Incorrect deposit");
 
         rentals[tokenId].renter = msg.sender;
+        escrow[msg.sender] += msg.value; // Add deposit to escrow
     }
 
     function endRental(uint256 tokenId) public {
         require(rentals[tokenId].renter == msg.sender, "Not the renter");
         require(block.timestamp >= rentals[tokenId].endTime, "Rental period not over");
+
+        // Release deposit
+        uint256 deposit = rentals[tokenId].deposit;
+        escrow[msg.sender] -= deposit;
+        payable(msg.sender).transfer(deposit);
 
         rentals[tokenId].renter = address(0);
     }
