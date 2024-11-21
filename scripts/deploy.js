@@ -3,27 +3,30 @@ async function main() {
 
     console.log("Deploying contracts with the account:", deployer.address);
 
-    const nonce = await deployer.getTransactionCount();
-    console.log("Current Nonce:", nonce);  // Print current nonce
+    // Get the current nonce from the provider (latest pending transaction count)
+    const nonce = await deployer.getTransactionCount("latest");  // Get the latest nonce
+    console.log("Current Nonce:", nonce);
 
-    // Define the gas price (you can set your gas price higher)
-    const gasPrice = ethers.utils.parseUnits('25', 'gwei');  // 25 gwei is often a safe starting point
+    // Fetch the current gas price dynamically from the Polygon network
+    const gasPrice = await ethers.provider.getGasPrice();
+    console.log("Current Gas Price (Gwei):", ethers.utils.formatUnits(gasPrice, "gwei"));
 
-    // Deploy contract
+    // Deploy contract with dynamic gas price and sufficient gas limit
     const Contract = await ethers.getContractFactory("RentalNFT");
-    const contract = await Contract.deploy({ 
-        nonce: nonce,  // Set the correct nonce here
-        gasLimit: 5000000,  // Set a high enough gas limit
-        gasPrice: gasPrice,  // Set a higher gas price
+    const contract = await Contract.deploy({
+        nonce: nonce,               // Use the correct nonce
+        gasLimit: 5000000,           // Set a reasonable gas limit (adjust if needed)
+        gasPrice: gasPrice,          // Use the current gas price dynamically fetched
     });
 
     console.log("Contract deployed at:", contract.address);
+
+    // Wait for the contract to be mined (optional)
+    await contract.deployTransaction.wait();
+    console.log("Contract successfully deployed and mined!");
 }
 
 main().catch((error) => {
     console.error(error);
     process.exitCode = 1;
 });
-
-
-  
