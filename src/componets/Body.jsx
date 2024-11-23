@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 
@@ -46,6 +46,48 @@ const FAQSection = () => {
 const Body = () => {
   const [walletAddress, setWalletAddress] = useState(null);
   const navigate = useNavigate();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentImageIndexNewSection, setCurrentImageIndexNewSection] = useState(0);
+
+
+  const images = [
+    "src/assets/Cycle.jpeg",
+    "src/assets/Headset.png",
+    "src/assets/Speaker.jpeg",
+    "src/assets/Vehicle.jpeg",
+    "src/assets/Vehicle2.jpeg",
+    "src/assets/image1.jpeg"
+  ];
+
+  const newSectionImages = [
+    "src/assets/image2.jpeg",
+    "src/assets/Canon.jpg",
+    "src/assets/camera2.jpg", // Add more images here
+    "src/assets/gameswitch.jpeg",
+    "src/assets/Ps5.jpeg",
+    "src/assets/controller.jpeg",
+  ];
+
+  // Cycle through images for the Continuation Section
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 3000); // Change every 3 seconds
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, [images.length]);
+
+  // Cycle through images for the New Section
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndexNewSection(
+        (prevIndex) => (prevIndex + 1) % newSectionImages.length
+      );
+    }, 3000); // Change every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [newSectionImages.length]);
+
 
   // Function to connect to MetaMask
   const connectWallet = async () => {
@@ -74,7 +116,7 @@ const Body = () => {
           </button>
           <button
             onClick={() => navigate("/rentitem")}
-            className="bg-[#ffffff] text-black px-6 py-3 rounded-lg font-se hover:bg-[#0056b3] hover:text-[#ffffff]  transition duration-200"
+            className="bg-[#ffffff] text-black px-6 py-3 rounded-lg font-semibold hover:bg-[#0056b3] hover:text-[#ffffff]  transition duration-200"
           >
              Rent an Item
           </button>
@@ -110,8 +152,8 @@ const Body = () => {
         {/* Right Side (Image) */}
         <div className="md:w-1/2 flex justify-center mb-6 md:mb-0">
           <img
-            src="src/assets/image1.jpeg"
-            alt="Guitar and music setup"
+            src={images[currentImageIndex]}
+            alt={`Dynamic image ${currentImageIndex + 1}`}
             className="rounded-lg shadow-lg w-full max-w-sm md:max-w-md lg:max-w-lg"
           />
         </div>
@@ -121,8 +163,8 @@ const Body = () => {
         {/* Left Side (Image) */}
         <div className="md:w-1/2 flex justify-center mb-6 md:mb-0">
           <img
-            src="src/assets/image2.jpeg"
-            alt="Camera with accessories"
+             src={newSectionImages[currentImageIndexNewSection]}
+            alt={`New Section image ${currentImageIndexNewSection + 1}`}
             className="rounded-lg shadow-lg w-full max-w-sm md:max-w-md lg:max-w-lg"
           />
         </div>
