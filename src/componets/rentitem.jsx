@@ -1,7 +1,15 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 
 const RentItem = () => {
   const [price, setPrice] = useState(10);
+  const [likedItems, setLikedItems] = useState([]);
+  const handleHeartClick = (itemIndex) => {
+    setLikedItems((prev) =>
+      prev.includes(itemIndex)
+        ? prev.filter((index) => index !== itemIndex)
+        : [...prev, itemIndex]
+    );
+  };
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
@@ -14,7 +22,7 @@ const RentItem = () => {
         </div>
       </div>
 
-       {/* Search Bar */}
+      {/* Search Bar */}
 
       <div className="bg-white p-4 shadow-md flex justify-center">
         <div className="relative w-1/2">
@@ -52,16 +60,18 @@ const RentItem = () => {
           </div>
           <div className="mb-4">
             <h4 className="font-medium">Location</h4>
-            <input
-              type="text"
-              placeholder="State"
-              className="w-full mb-2 p-2 border rounded-md"
-            />
-            <input
-              type="text"
-              placeholder="City"
-              className="w-full p-2 border rounded-md"
-            />
+            <div className="flex space-x-2">
+              <input
+                type="text"
+                placeholder="State"
+                className="w-1/2 p-2 border rounded-md"
+              />
+              <input
+                type="text"
+                placeholder="City"
+                className="w-1/2 p-2 border rounded-md"
+              />
+            </div>
           </div>
           <div className="mb-4">
             <h4 className="font-medium">Delivery Options</h4>
@@ -100,37 +110,48 @@ const RentItem = () => {
           <div className="grid grid-cols-3 gap-4">
             {/* Example Item */}
             {Array.from({ length: 9 }).map((_, i) => (
-              <div key={i} className="bg-white shadow-md rounded-md p-4 relative">
+              <div
+                key={i}
+                className="bg-white shadow-md rounded-md p-4 relative"
+              >
                 <img
                   src="./src/assets/Canon.jpg"
                   alt="Item"
                   className="rounded-md mb-4"
                 />
-                <h4 className="font-bold">Canon DSLR Camera</h4>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <h4 className="font-bold mr-2">Canon DSLR Camera</h4>
+                    {/* Heart Icon */}
+                    <button
+                      onClick={() => handleHeartClick(i)}
+                      className="focus:outline-none"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill={likedItems.includes(i) ? "red" : "none"}
+                        viewBox="0 0 24 24"
+                        strokeWidth={2}
+                        stroke="currentColor"
+                        className="w-6 h-10"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M3.172 5.172a4.003 4.003 0 015.656 0L12 8.344l3.172-3.172a4.003 4.003 0 015.656 0 4.003 4.003 0 010 5.656L12 18.828l-8.828-8.828a4.003 4.003 0 010-5.656z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
                 <p className="text-sm font-bold">₹500/day</p>
-                <p className="text-xs text-gray-500">Rental Price</p>
+                <p className="text-sm text-gray-500">Rental Price</p>
                 <div className="flex items-center justify-between mt-2">
                   <p className="text-green-500 font-semibold">AVAILABLE!</p>
                   <button className="bg-blue-500 text-white text-sm px-4 py-2 rounded-md shadow-md hover:bg-blue-600">
                     View Details
                   </button>
                 </div>
-                <button className="absolute top-2 right-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="w-6 h-6 text-gray-500 hover:text-red-500"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M3.172 5.172a4.003 4.003 0 015.656 0L12 8.344l3.172-3.172a4.003 4.003 0 015.656 0 4.003 4.003 0 010 5.656L12 18.828l-8.828-8.828a4.003 4.003 0 010-5.656z"
-                    />
-                  </svg>
-                </button>
               </div>
             ))}
           </div>
