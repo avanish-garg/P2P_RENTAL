@@ -1,4 +1,4 @@
-iimport React, { useState } from "react";
+import React, { useState } from "react";
 import { ethers } from "ethers";
 import { contractABI, contractAddress } from "./constants";
 
