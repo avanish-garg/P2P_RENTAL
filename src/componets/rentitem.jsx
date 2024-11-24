@@ -1,15 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const RentItem = () => {
   const [price, setPrice] = useState(10);
   const [likedItems, setLikedItems] = useState([]);
-  const handleHeartClick = (itemIndex) => {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const items = [
+    { id: 1, name: "Canon DSLR Camera", category: "DSLR", price: 500, image: "Canon.jpg" },
+    { id: 2, name: "Vintage Film Camera", category: "Film", price: 300, image: "vintagecamera.jpeg" },
+    { id: 3, name: "GoPro Hero", category: "Action", price: 400, image: "GoProHero.jpeg"},
+  ];
+
+  const handleHeartClick = (itemId) => {
     setLikedItems((prev) =>
-      prev.includes(itemIndex)
-        ? prev.filter((index) => index !== itemIndex)
-        : [...prev, itemIndex]
+      prev.includes(itemId)
+        ? prev.filter((id) => id !== itemId)
+        : [...prev, itemId]
     );
   };
+
+  // Filter items based on selected category
+  const filteredItems =
+    selectedCategory === "All"
+      ? items
+      : items.filter((item) => item.category === selectedCategory);
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
@@ -23,7 +38,6 @@ const RentItem = () => {
       </div>
 
       {/* Search Bar */}
-
       <div className="bg-white p-4 shadow-md flex justify-center">
         <div className="relative w-1/2">
           <input
@@ -40,23 +54,37 @@ const RentItem = () => {
               stroke="currentColor"
               className="w-5 h-5 text-gray-500"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M16.65 11a5.65 5.65 0 11-11.3 0 5.65 5.65 0 0111.3 0z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 21l-4.35-4.35M16.65 11a5.65 5.65 0 11-11.3 0 5.65 5.65 0 0111.3 0z"
+              />
             </svg>
           </button>
         </div>
       </div>
 
-
+      {/* Main Content */}
       <div className="p-4 flex">
         {/* Filters Section */}
         <div className="w-1/4 bg-white p-4 shadow-md rounded-md">
           <h3 className="font-semibold mb-4">Filters</h3>
+          {/* Categories Filter */}
           <div className="mb-4">
             <h4 className="font-medium">Categories</h4>
-            <div className="space-y-2">
-              <label className="block"><input type="checkbox" /> DSLR</label>
-              <label className="block"><input type="checkbox" /> Film</label>
-            </div>
+            {["All", "DSLR", "Film", "Action"].map((category) => (
+              <label key={category} className="block">
+                <input
+                  type="radio"
+                  name="category"
+                  value={category}
+                  checked={selectedCategory === category}
+                  onChange={() => setSelectedCategory(category)}
+                  className="mr-2"
+                />
+                {category}
+              </label>
+            ))}
           </div>
           <div className="mb-4">
             <h4 className="font-medium">Location</h4>
@@ -76,11 +104,15 @@ const RentItem = () => {
           <div className="mb-4">
             <h4 className="font-medium">Delivery Options</h4>
             <div className="space-y-2">
-              <label className="block"><input type="checkbox" /> Home Delivery</label>
-              <label className="block"><input type="checkbox" /> Self-Pickup</label>
+              <label className="block">
+                <input type="checkbox" /> Home Delivery
+              </label>
+              <label className="block">
+                <input type="checkbox" /> Self-Pickup
+              </label>
             </div>
           </div>
-          <div>
+          <div className="mb-4">
             <label>Price Range</label>
             <div className="flex items-center space-x-2">
               <span>{price}₹</span>
@@ -98,8 +130,12 @@ const RentItem = () => {
           <div>
             <h4 className="font-medium">Availability Options</h4>
             <div className="space-y-2">
-              <label className="block"><input type="checkbox" /> Available</label>
-              <label className="block"><input type="checkbox" /> Not Available</label>
+              <label className="block">
+                <input type="checkbox" /> Available
+              </label>
+              <label className="block">
+                <input type="checkbox" /> Not Available
+              </label>
             </div>
           </div>
         </div>
@@ -108,44 +144,40 @@ const RentItem = () => {
         <div className="w-3/4 ml-4">
           <h3 className="font-semibold mb-4">Results</h3>
           <div className="grid grid-cols-3 gap-4">
-            {/* Example Item */}
-            {Array.from({ length: 9 }).map((_, i) => (
+            {filteredItems.map((item) => (
               <div
-                key={i}
+                key={item.id}
                 className="bg-white shadow-md rounded-md p-4 relative"
               >
                 <img
-                  src="./src/assets/Canon.jpg"
-                  alt="Item"
+                  src={`/src/assets/${item.image}`}
+                  alt={item.name}
                   className="rounded-md mb-4"
                 />
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <h4 className="font-bold mr-2">Canon DSLR Camera</h4>
-                    {/* Heart Icon */}
-                    <button
-                      onClick={() => handleHeartClick(i)}
-                      className="focus:outline-none"
+                  <h4 className="font-bold">{item.name}</h4>
+                  <button
+                    onClick={() => handleHeartClick(item.id)}
+                    className="focus:outline-none"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill={likedItems.includes(item.id) ? "red" : "none"}
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="w-6 h-6"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill={likedItems.includes(i) ? "red" : "none"}
-                        viewBox="0 0 24 24"
-                        strokeWidth={2}
-                        stroke="currentColor"
-                        className="w-6 h-10"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M3.172 5.172a4.003 4.003 0 015.656 0L12 8.344l3.172-3.172a4.003 4.003 0 015.656 0 4.003 4.003 0 010 5.656L12 18.828l-8.828-8.828a4.003 4.003 0 010-5.656z"
-                        />
-                      </svg>
-                    </button>
-                  </div>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3.172 5.172a4.003 4.003 0 015.656 0L12 8.344l3.172-3.172a4.003 4.003 0 015.656 0 4.003 4.003 0 010 5.656L12 18.828l-8.828-8.828a4.003 4.003 0 010-5.656z"
+                      />
+                    </svg>
+                  </button>
                 </div>
-                <p className="text-sm font-bold">₹500/day</p>
-                <p className="text-sm text-gray-500">Rental Price</p>
+                <p className="text-sm font-bold">₹{item.price}/day</p>
+                <p className="text-xs text-gray-500">Rental Price</p>
                 <div className="flex items-center justify-between mt-2">
                   <p className="text-green-500 font-semibold">AVAILABLE!</p>
                   <button className="bg-blue-500 text-white text-sm px-4 py-2 rounded-md shadow-md hover:bg-blue-600">
