@@ -1,15 +1,72 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const RentItem = () => {
+  const navigate = useNavigate();
+
+  const mockItemData = [
+    {
+      id: 1,
+      title: "Canon DSLR Camera",
+      description: "A high-quality DSLR camera ideal for photography and videography. Comes with an 18-55mm lens, battery, and charger. Perfect for weddings, events, and travel.",
+      price: "₹500 / night",
+      owner: {
+        name: "Anushka Shukla",
+        rating: 5,
+      },
+      specifications: {
+        brand: "Canon",
+        model: "EOS 1500D",
+        lens: "18-55mm",
+        weight: "475g",
+        battery: "Rechargeable (included)",
+      },
+      image: "/src/assets/Canon.jpg",
+      category: "DSLR",
+    },
+    {
+      id: 2,
+      title: "Vintage Film Camera",
+      description: "Capture timeless moments with this vintage film camera. Perfect for photography enthusiasts and collectors. Comes with a strap and a leather carry case.",
+      price: "₹300 / night",
+      owner: {
+        name: "Ravi Patel",
+        rating: 4,
+      },
+      specifications: {
+        brand: "Nikon",
+        model: "F3HP",
+        lens: "50mm f/1.8",
+        weight: "750g",
+        battery: "Not required",
+      },
+      image: "/src/assets/vintagecamera.jpeg",
+      category: "Film",
+    },
+    {
+      id: 3,
+      title: "GoPro Hero",
+      description: "A compact and versatile action camera. Ideal for capturing your adventures, from extreme sports to underwater explorations. Comes with a waterproof case.",
+      price: "₹400 / night",
+      owner: {
+        name: "Sneha Mehta",
+        rating: 4.5,
+      },
+      specifications: {
+        brand: "GoPro",
+        model: "Hero 9 Black",
+        lens: "Fixed Wide-Angle",
+        weight: "158g",
+        battery: "Rechargeable (included)",
+      },
+      image: "/src/assets/GoProHero.jpeg",
+      category: "Action",
+    },
+  ];
+
   const [price, setPrice] = useState(10);
   const [likedItems, setLikedItems] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
-
-  const items = [
-    { id: 1, name: "Canon DSLR Camera", category: "DSLR", price: 500, image: "Canon.jpg" },
-    { id: 2, name: "Vintage Film Camera", category: "Film", price: 300, image: "vintagecamera.jpeg" },
-    { id: 3, name: "GoPro Hero", category: "Action", price: 400, image: "GoProHero.jpeg"},
-  ];
 
   const handleHeartClick = (itemId) => {
     setLikedItems((prev) =>
@@ -19,11 +76,15 @@ const RentItem = () => {
     );
   };
 
+  const handleViewDetails = (item) => {
+    navigate('/details', { state: { itemData: item } });
+  };
+
   // Filter items based on selected category
   const filteredItems =
     selectedCategory === "All"
-      ? items
-      : items.filter((item) => item.category === selectedCategory);
+      ? mockItemData
+      : mockItemData.filter((item) => item.category === selectedCategory);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -122,7 +183,7 @@ const RentItem = () => {
                 max="5000"
                 step="10"
                 value={price}
-                onChange={(e) => setPrice(e.target.value)} // Update price on change
+                onChange={(e) => setPrice(e.target.value)}
                 className="ml-2"
               />
             </div>
@@ -150,12 +211,12 @@ const RentItem = () => {
                 className="bg-white shadow-md rounded-md p-4 relative"
               >
                 <img
-                  src={`/src/assets/${item.image}`}
-                  alt={item.name}
-                  className="rounded-md mb-4"
+                  src={item.image}
+                  alt={item.title}
+                  className="rounded-md mb-4 w-full h-48 object-cover"
                 />
                 <div className="flex items-center justify-between">
-                  <h4 className="font-bold">{item.name}</h4>
+                  <h4 className="font-bold">{item.title}</h4>
                   <button
                     onClick={() => handleHeartClick(item.id)}
                     className="focus:outline-none"
@@ -176,11 +237,14 @@ const RentItem = () => {
                     </svg>
                   </button>
                 </div>
-                <p className="text-sm font-bold">₹{item.price}/day</p>
+                <p className="text-sm font-bold">{item.price}</p>
                 <p className="text-xs text-gray-500">Rental Price</p>
                 <div className="flex items-center justify-between mt-2">
                   <p className="text-green-500 font-semibold">AVAILABLE!</p>
-                  <button className="bg-blue-500 text-white text-sm px-4 py-2 rounded-md shadow-md hover:bg-blue-600">
+                  <button
+                    onClick={() => handleViewDetails(item)}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  >
                     View Details
                   </button>
                 </div>
@@ -194,3 +258,4 @@ const RentItem = () => {
 };
 
 export default RentItem;
+
