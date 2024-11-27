@@ -204,19 +204,21 @@ const RentItem = () => {
         {/* Results Section */}
         <div className="w-3/4 ml-4">
           <h3 className="font-semibold mb-4">Results</h3>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredItems.map((item) => (
               <div
                 key={item.id}
-                className="bg-white shadow-md rounded-md p-4 relative"
+                className="bg-white shadow-md rounded-md p-4 relative flex flex-col"
               >
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="rounded-md mb-4 w-full h-48 object-cover"
-                />
+                <div className="relative pb-[56.25%] mb-4">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="absolute top-0 left-0 w-full h-full object-cover rounded-md"
+                  />
+                </div>
                 <div className="flex items-center justify-between">
-                  <h4 className="font-bold">{item.title}</h4>
+                  <h4 className="font-bold truncate">{item.title}</h4>
                   <button
                     onClick={() => handleHeartClick(item.id)}
                     className="focus:outline-none"

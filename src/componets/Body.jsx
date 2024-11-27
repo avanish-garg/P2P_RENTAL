@@ -140,7 +140,11 @@ const Body = () => {
             Add breakpoints to your blank page,<br />then drop sections to have them <br /> responsive out of the box.
           </p>
           <div className="flex space-x-4">
-            <button className="px-6 py-3 bg-[#000000] text-white rounded-lg font-bold hover:bg-[#0056b3] transition duration-200">
+            <button 
+              onClick={() => navigate('/signup')}
+              className="px-6 py-3 bg-[#000000] text-white rounded-lg 
+              font-bold hover:bg-[#0056b3] transition duration-200"
+            >
               Get Started
             </button>
             <button className="px-6 py-3 bg-[#bababa] text-[#000000] border  rounded-lg font-bold hover:bg-[#0056b3] hover:text-[#ffffff] transition duration-200">
@@ -178,7 +182,11 @@ const Body = () => {
            Double click the image placeholders to add images. Do the same for any text, then tweak styles and publish.
           </p>
           <div className="flex space-x-4">
-            <button className="px-6 py-3 bg-[#000000] text-white rounded-lg font-bold hover:bg-[#0056b3] transition duration-200">
+            <button 
+              onClick={() => navigate('/signup')}
+              className="px-6 py-3 bg-[#000000] text-white rounded-lg 
+              font-bold hover:bg-[#0056b3] transition duration-200"
+            >
               Get Started
             </button>
             <button className="px-6 py-3 bg-[#bababa] text-[#000000] border rounded-lg font-bold hover:bg-[#0056b3] hover:text-[#ffffff] transition duration-200">
