@@ -4,6 +4,7 @@ import Body from "./componets/Body"
 import Signup from './componets/Signup';
 import RentItem from "./componets/rentitem";
 import DetailPage from './componets/DetailPage';
+import ListItem from './componets/list-item'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/rentitem" element={<RentItem />} />
             <Route path="/details" element={<DetailPage />} />
+            <Route path="/list-item" element={<ListItem />} />
           </Routes>
           <Footer />
         </div>

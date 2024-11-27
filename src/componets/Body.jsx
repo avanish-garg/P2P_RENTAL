@@ -111,9 +111,14 @@ const Body = () => {
           Share What You Own, Rent What You Need – Powered by Web3
         </h1>
         <div className="flex space-x-4 mt-6">
-          <button className="px-6 py-3 bg-[#ffffff] text-black rounded-lg font-semibold hover:bg-[#0056b3] hover:text-[#ffffff] transition duration-200">
+          <button 
+            onClick={() => navigate('/list-item')} // Add this onClick handler
+            className="px-6 py-3 bg-[#ffffff] text-black rounded-lg font-semibold 
+            hover:bg-[#0056b3] hover:text-[#ffffff] transition duration-200"
+          >
             List an Item
           </button>
+
           <button
             onClick={() => navigate("/rentitem")}
             className="bg-[#ffffff] text-black px-6 py-3 rounded-lg font-semibold hover:bg-[#0056b3] hover:text-[#ffffff]  transition duration-200"
