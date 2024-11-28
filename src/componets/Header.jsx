@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from 'react-router-dom';
 const Header = () => {
   return (
     <header className="bg-white shadow fixed w-full top-0 z-10">
@@ -42,8 +42,8 @@ const Header = () => {
           <li>
             <button className="hover:text-blue-500">Changelog</button>
           </li>
-          <li>
-            <button className="hover:text-blue-500">Pricing</button>
+         <li>
+            <Link to="/profile" className="hover:text-blue-500">Profile</Link>
           </li>
         </ul>
       </nav>
