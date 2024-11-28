@@ -8,10 +8,12 @@ const ListItem = () => {
   const [price, setPrice] = useState('');
   const [specifications, setSpecifications] = useState('');
   const [walletConnected, setWalletConnected] = useState(false);
+  const [images, setImages] = useState([]); // Array to store image files
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', { title, description, price, specifications });
+    console.log('Form submitted:', { title, description, price, specifications,images });
   };
 
   const connectWallet = async () => {
@@ -26,6 +28,11 @@ const ListItem = () => {
       alert('Please install MetaMask to use this feature');
     }
   };
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImages((prevImages) => [...prevImages, ...files].slice(0, 5)); // Limit to 5 images
+  };
+
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100 p-4 pt-20">
@@ -72,15 +79,30 @@ const ListItem = () => {
           </div>
           <div>
             <label className="block text-gray-700 font-medium mb-2">Product images:</label>
-            <button
-              type="button"
-              className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 focus:outline-none"
+            <input
+              type="file"
+              accept="image/png, image/jpeg, image/jpg"
+              multiple
+              onChange={handleImageChange}
+              className="hidden"
+              id="imageInput"
+            />
+            <label
+              htmlFor="imageInput"
+              className="w-full bg-blue-500 text-white py-1 px-3 rounded-lg hover:bg-blue-600 focus:outline-none text-center cursor-pointer"
             >
               ADD PRODUCT IMAGE
-            </button>
+            </label>
             <p className="text-sm text-gray-500 mt-1">
               Accepted formats: .png, .jpeg, .jpg (you can add a maximum of 5 product images)
             </p>
+            {images.length > 0 && (
+              <ul className="mt-2 space-y-1 text-sm text-gray-600">
+                {images.map((image, index) => (
+                  <li key={index}>- {image.name}</li>
+                ))}
+              </ul>
+            )}
           </div>
           <div>
             <label className="block text-gray-700 font-medium mb-2">Wallet connections:</label>
@@ -91,7 +113,7 @@ const ListItem = () => {
             >
               {walletConnected ? 'WALLET CONNECTED' : 'CONNECT WALLET'}
             </button>
-            <p className="text-sm text-gray-500 mt-1">MetaMask: Accepted</p>
+            <p className="text-sm text-gray-500 mt-1">Accepted Wallet: MetaMask</p>
           </div>
           <button
             type="button"
