@@ -6,6 +6,7 @@ import RentItem from "./componets/rentitem";
 import DetailPage from './componets/DetailPage';
 import ListItem from './componets/list-item';
 import Profile from "./componets/Profile";
+import Account from "./componets/Account";
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 function App() {
@@ -21,7 +22,7 @@ function App() {
             <Route path="/details" element={<DetailPage />} />
             <Route path="/list-item" element={<ListItem />} />
             <Route path="/profile" element={<Profile />} />
-
+            <Route path="/account" element={<Account />} />
           </Routes>
           <Footer />
         </div>

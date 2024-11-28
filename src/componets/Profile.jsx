@@ -1,6 +1,7 @@
 import React from 'react';
-
+import { useNavigate } from "react-router-dom";
 const Profile = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-gray-50 pt-20 px-4">
       <div className="max-w-4xl mx-auto">
@@ -85,8 +86,11 @@ const Profile = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <button className="bg-white p-4 rounded-lg shadow-md text-center hover:bg-gray-50">
-            <h3 className="font-medium">ACCOUNT</h3>
+          <button
+            onClick={() => navigate("/account")} // Navigate to Account page
+            className="flex-1 text-sm bg-blue-500 text-white py-2 rounded font-medium"
+          >
+            ACCOUNT
           </button>
           <button className="bg-white p-4 rounded-lg shadow-md text-center hover:bg-gray-50">
             <h3 className="font-medium">DASHBOARD</h3>
