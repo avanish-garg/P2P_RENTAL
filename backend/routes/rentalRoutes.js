@@ -1,17 +1,10 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const rentalController = require("../controllers/rentalController");
+const { mintNFT, createRental, startRental, endRental } = require('../controllers/rentalController');
 
-// Mint NFT
-router.post("/mint", rentalController.mintNFT);
-
-// Create Rental
-router.post("/create-rental", rentalController.createRental);
-
-// Start Rental
-router.post("/start-rental", rentalController.startRental);
-
-// End Rental
-router.post("/end-rental", rentalController.endRental);
+router.post('/mint', mintNFT);
+router.post('/create-rental', createRental);
+router.post('/start-rental', startRental);
+router.post('/end-rental', endRental);
 
 module.exports = router;

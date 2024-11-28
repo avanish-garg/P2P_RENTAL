@@ -1,14 +1,15 @@
-const { ethers } = require("ethers");
 require("dotenv").config();
+const { ethers } = require("ethers");
 
-const provider = new ethers.JsonRpcProvider(process.env.AMOY_RPC_URL);
+// Set up Ethereum provider
+const provider = new ethers.JsonRpcProvider(process.env.MUMBAI_RPC_URL);
 const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
-const contractAbi = [
-    /* Your RentalNFT ABI */
-];
-const contractAddress = "0x2965c122e1bB4b444e4048E1f4327Cf3FB699a86";
+// Contract ABI and address
+const contractAddress = process.env.CONTRACT_ADDRESS;
+const contractABI = require("../contracts/RentalNFT.json").abi;
 
-const rentalNFT = new ethers.Contract(contractAddress, contractAbi, wallet);
+// Blockchain contract instance
+const rentalNFT = new ethers.Contract(contractAddress, contractABI, wallet);
 
 module.exports = { rentalNFT };

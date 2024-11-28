@@ -22,7 +22,7 @@ const itemSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    // Add other fields as necessary
+    // Add other fields if necessary (e.g., rental status, rental history)
 });
 
 const Item = mongoose.model('Item', itemSchema);
