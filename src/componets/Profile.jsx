@@ -98,6 +98,12 @@ const Profile = () => {
           <button className="bg-white p-4 rounded-lg shadow-md text-center hover:bg-gray-50">
             <h3 className="font-medium">WALLET</h3>
           </button>
+          <button 
+          onClick={() => navigate(-1)} 
+          className="mt-6 flex items-center justify-center text-blue-500 text-lg hover:underline"
+        >
+          ← Back
+        </button>
         </div>
       </div>
     </div>

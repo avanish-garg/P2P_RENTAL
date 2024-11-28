@@ -28,11 +28,11 @@ const ListItem = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-100 p-4">
+    <div className="min-h-screen flex flex-col items-center bg-gray-100 p-4 pt-20">
       <div className="w-full max-w-xl bg-white shadow-md rounded-lg p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-gray-700 font-medium mb-2">Title</label>
+            <label className="block text-gray-900 font-medium mb-2">Title</label>
             <input
               type="text"
               value={title}
