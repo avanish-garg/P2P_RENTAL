@@ -92,7 +92,10 @@ const Profile = () => {
           >
             ACCOUNT
           </button>
-          <button className="bg-white p-4 rounded-lg shadow-md text-center hover:bg-gray-50">
+          <button
+            onClick={() => navigate("/dashboard")} // Update this line
+            className="bg-white p-4 rounded-lg shadow-md text-center hover:bg-gray-50"
+          >
             <h3 className="font-medium">DASHBOARD</h3>
           </button>
           <button className="bg-white p-4 rounded-lg shadow-md text-center hover:bg-gray-50">
