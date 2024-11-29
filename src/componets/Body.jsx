@@ -1,7 +1,6 @@
 import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 const ReviewsSection = () => {
   return (
     <div className="bg-gray-50 py-12">
@@ -48,6 +47,9 @@ const Body = () => {
   const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentImageIndexNewSection, setCurrentImageIndexNewSection] = useState(0);
+  const [fadeIn, setFadeIn] = useState(true);
+  const [fadeInNewSection, setFadeInNewSection] = useState(true);
+
 
 
   const images = [
@@ -69,9 +71,13 @@ const Body = () => {
   ];
 
   // Cycle through images for the Continuation Section
-  useEffect(() => {
+ useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setFadeIn(false); // Start fade-out
+      setTimeout(() => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+        setFadeIn(true); // Start fade-in
+      }, 500); // Duration of fade-out effect
     }, 3000); // Change every 3 seconds
 
     return () => clearInterval(interval); // Cleanup on component unmount
@@ -80,12 +86,16 @@ const Body = () => {
   // Cycle through images for the New Section
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndexNewSection(
-        (prevIndex) => (prevIndex + 1) % newSectionImages.length
-      );
+      setFadeInNewSection(false); // Start fade-out
+      setTimeout(() => {
+        setCurrentImageIndexNewSection(
+          (prevIndex) => (prevIndex + 1) % newSectionImages.length
+        );
+        setFadeInNewSection(true); // Start fade-in
+      }, 500); // Duration of fade-out effect
     }, 3000); // Change every 3 seconds
 
-    return () => clearInterval(interval);
+    return () => clearInterval(interval); // Cleanup on component unmount
   }, [newSectionImages.length]);
 
 
@@ -159,24 +169,36 @@ const Body = () => {
         </div>
 
         {/* Right Side (Image) */}
-        <div className="md:w-1/2 flex justify-center mb-6 md:mb-0">
+        <div className="max-w-5xl mx-auto p-6">
+        <div
+          className={`transition-opacity duration-500 ${
+            fadeIn ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
           <img
             src={images[currentImageIndex]}
-            alt={`Dynamic image ${currentImageIndex + 1}`}
-            className="rounded-lg shadow-lg w-full max-w-sm md:max-w-md lg:max-w-lg"
+            alt={`Slide ${currentImageIndex}`}
+            className="w-70 h-85 object-cover rounded-lg shadow-lg"
           />
         </div>
+      </div>
       </div>
        {/* New Section */}
       <div className="flex flex-col md:flex-row items-center justify-between bg-white py-12">
         {/* Left Side (Image) */}
-        <div className="md:w-1/2 flex justify-center mb-6 md:mb-0">
+        <div className="max-w-5xl mx-auto p-6 mt-8">
+        <div
+          className={`transition-opacity duration-500 ${
+            fadeInNewSection ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
           <img
-             src={newSectionImages[currentImageIndexNewSection]}
-            alt={`New Section image ${currentImageIndexNewSection + 1}`}
-            className="rounded-lg shadow-lg w-full max-w-sm md:max-w-md lg:max-w-lg"
+            src={newSectionImages[currentImageIndexNewSection]}
+            alt={`Slide ${currentImageIndexNewSection}`}
+            className="w-70 h-85 object-cover rounded-lg shadow-lg"
           />
         </div>
+      </div>
 
         {/* Right Side (Text) */}
         <div className="md:w-1/2 p-8">
