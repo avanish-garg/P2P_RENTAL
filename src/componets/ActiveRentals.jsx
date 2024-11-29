@@ -3,19 +3,19 @@ import React from 'react';
 const ActiveRentals = () => {
   const rentals = [
     {
-      image: 'https://example.com/dslr-camera.jpg',
+      image: './src/assets/Canon.jpg',
       title: 'Canon DSLR Camera',
       due: '2 days, 4 hrs',
       owner: 'Anushka Shukla',
     },
     {
-      image: 'https://example.com/bike.jpg',
+      image: './src/assets/Cycle.jpeg',
       title: 'Tsunami NM100 Bike',
       due: '1 day, 4 hrs',
       owner: 'Banshika Choithani',
     },
     {
-      image: 'https://example.com/keyboard.jpg',
+      image: './src/assets/piano.jpeg',
       title: 'Yamaha PSR Piano Keyboard',
       due: '5 days, 4 hrs',
       owner: 'Bharat Doshi',
