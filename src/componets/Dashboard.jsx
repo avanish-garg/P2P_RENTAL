@@ -40,7 +40,10 @@ const Dashboard = () => {
 
         {/* Main Area */}
         <div className="flex-grow flex justify-center items-center min-h-[200px]">
-          <button className="px-10 py-4 font-bold bg-[#ffffff] text-black rounded-full text-xl hover:bg-[#0056b3] hover:text-[#ffffff] transition duration-200 shadow-lg">
+          <button
+            onClick={() => navigate('/active-rentals')}
+            className="px-10 py-4 bg-white text-black rounded-full text-xl hover:bg-[#0056b3] hover:text-[#ffffff] transition duration-200 shadow-lg"
+          >
             Explore
           </button>
         </div>

@@ -9,6 +9,7 @@ import Profile from "./componets/Profile";
 import Account from "./componets/Account";
 import Login from './componets/Login';
 import Dashboard from './componets/Dashboard';
+import ActiveRentals from './componets/ActiveRentals';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 function App() {
@@ -27,6 +28,7 @@ function App() {
             <Route path="/account" element={<Account />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/active-rentals" element={<ActiveRentals />} />
           </Routes>
           <Footer />
         </div>
