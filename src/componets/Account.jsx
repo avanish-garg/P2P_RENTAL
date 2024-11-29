@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 pt-20">
       <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
         {/* Profile Header */}
         <div className="text-center">
@@ -66,6 +68,12 @@ const ProfilePage = () => {
             DELETE ACCOUNT
           </button>
         </div>
+        <button 
+          onClick={() => navigate(-1)} 
+          className="mt-6 flex items-center justify-center text-blue-500 text-lg hover:underline"
+        >
+          ← Back
+        </button>
       </div>
     </div>
   );

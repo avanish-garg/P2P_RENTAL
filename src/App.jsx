@@ -7,6 +7,7 @@ import DetailPage from './componets/DetailPage';
 import ListItem from './componets/list-item';
 import Profile from "./componets/Profile";
 import Account from "./componets/Account";
+import Login from './componets/Login';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path="/list-item" element={<ListItem />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/account" element={<Account />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
           <Footer />
         </div>

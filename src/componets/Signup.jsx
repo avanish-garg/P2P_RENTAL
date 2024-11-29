@@ -22,10 +22,11 @@ const Signup = () => {
         ></div>
         
         {/* Right Section */}
-        <div className="w-full md:w-1/2 p-8">
+        <div className="w-full md:w-1/2 p-8 pt-20">
           <h2 className="text-2xl font-semibold mb-4 text-center">Create an account</h2>
           <p className="text-sm text-center mb-6">
-            Already have an account? <a href="/login" className="text-blue-500 hover:underline">Log in</a>
+            Already have an account?
+            <a href="/login" className="text-blue-500 hover:underline">Log in</a>
           </p>
           <form className="space-y-4">
             <div className="flex space-x-2">
@@ -52,7 +53,7 @@ const Signup = () => {
             />
             <input
               type="text"
-              placeholder="Country of Residence"
+              placeholder="Enter the Password"
               className="w-full p-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
             />
             <select
