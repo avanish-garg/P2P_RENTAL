@@ -5,7 +5,9 @@ const Header = () => {
     <header className="bg-white shadow fixed w-full top-0 z-10">
       <nav className="container mx-auto flex justify-between items-center py-4 px-6">
         {/* Logo Section */}
-        <div className="font-bold text-lg text-black">Logo</div>
+         <div className="flex items-center space-x-2">
+          <img src="./src/assets/logo.png" alt="Logo" className="h-10 w-auto object-contain" />
+        </div>
         
         {/* Navigation Links */}
         <ul className="flex space-x-6 text-sm font-medium text-gray-700">

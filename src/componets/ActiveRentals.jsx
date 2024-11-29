@@ -1,6 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ActiveRentals = () => {
+  const navigate = useNavigate();
   const rentals = [
     {
       image: './src/assets/Canon.jpg',
@@ -25,8 +27,19 @@ const ActiveRentals = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="p-6 bg-gray-800 text-white">
-        <h1 className="text-xl font-bold">Your Dashboard - Active Rentals</h1>
+       <div className="p-6 bg-gray-800 shadow-md">
+        <div className="max-w-5xl mx-auto flex items-center">
+          <button
+            onClick={() => navigate(-1)}
+            className="mr-6 text-white hover:text-gray-300 p-2"
+            aria-label="Go back"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <h1 className="text-2xl font-bold text-black">Your Dashboard</h1>
+        </div>
       </div>
 
       {/* Rental Items */}

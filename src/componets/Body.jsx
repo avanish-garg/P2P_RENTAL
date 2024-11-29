@@ -178,7 +178,7 @@ const Body = () => {
           <img
             src={images[currentImageIndex]}
             alt={`Slide ${currentImageIndex}`}
-            className="w-70 h-85 object-cover rounded-lg shadow-lg"
+            className="w-full h-[500px] object-cover rounded-lg shadow-xl"
           />
         </div>
       </div>
@@ -195,7 +195,7 @@ const Body = () => {
           <img
             src={newSectionImages[currentImageIndexNewSection]}
             alt={`Slide ${currentImageIndexNewSection}`}
-            className="w-70 h-85 object-cover rounded-lg shadow-lg"
+            className="w-full h-[500px] object-cover rounded-lg shadow-xl"
           />
         </div>
       </div>
