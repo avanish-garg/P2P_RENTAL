@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from 'react-router-dom';
+
 const Header = () => {
   return (
-    <header className="bg-white shadow fixed w-full top-0 z-10">
-      <nav className="container mx-auto flex justify-between items-center py-4 px-6">
+    <header className="bg-white shadow fixed w-full top-0 z-10 h-16"> {/* Added h-16 for fixed height */}
+      <nav className="container mx-auto flex justify-between items-center h-full px-6"> {/* Changed py-4 to h-full */}
         {/* Logo Section */}
-         <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2">
           <img src="./src/assets/logo.png" alt="Logo" className="h-10 w-auto object-contain" />
         </div>
         

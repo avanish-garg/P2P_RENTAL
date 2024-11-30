@@ -25,9 +25,9 @@ const ActiveRentals = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pt-16"> {/* Added pt-16 to account for fixed header */}
       {/* Header */}
-       <div className="p-6 bg-gray-800 shadow-md">
+      <div className="p-6 bg-gray-800 shadow-md">
         <div className="max-w-5xl mx-auto flex items-center">
           <button
             onClick={() => navigate(-1)}
@@ -38,7 +38,7 @@ const ActiveRentals = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h1 className="text-2xl font-bold text-black">Your Dashboard</h1>
+          <h1 className="text-2xl font-bold text-white">Your Dashboard</h1> {/* Changed text color to white */}
         </div>
       </div>
 
@@ -72,3 +72,4 @@ const ActiveRentals = () => {
 };
 
 export default ActiveRentals;
+

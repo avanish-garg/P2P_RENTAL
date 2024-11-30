@@ -1,112 +1,134 @@
-import React from 'react';
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 const Profile = () => {
   const navigate = useNavigate();
+
+  // State for editable fields
+  const [fields, setFields] = useState({
+    name: "John Doe",
+    email: "john.doe@example.com",
+    phone: "123-456-7890",
+    address: "123 Main Street, Springfield",
+    dob: "1990-01-01",
+    profileImage: "./src/assets/profile.jpeg", // Initial profile image
+  });
+
+  const [isEditing, setIsEditing] = useState({
+    name: false,
+    email: false,
+    phone: false,
+    address: false,
+    dob: false,
+    profileImage: false,
+  });
+
+  // Handler for toggling edit mode
+  const toggleEdit = (field) => {
+    setIsEditing((prev) => ({ ...prev, [field]: !prev[field] }));
+  };
+
+  // Handler for updating field values
+  const handleFieldChange = (field, value) => {
+    setFields((prev) => ({ ...prev, [field]: value }));
+  };
+
+  // Handler for updating profile image
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      handleFieldChange("profileImage", imageUrl);
+      toggleEdit("profileImage");
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 pt-20 px-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gray-50 pt-20 px-4 flex flex-col items-center">
+      <div className="max-w-2xl w-full bg-white p-8 rounded shadow">
+        {/* Profile Header */}
         <div className="flex flex-col items-center mb-8">
           <div className="relative w-32 h-32 mb-4">
-            <img
-              src="./src/assets/profile.jpeg"
-              alt="Profile picture"
-              className="w-full h-full rounded-full border-4 border-white shadow-lg"
-            />
+            {isEditing.profileImage ? (
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+              />
+            ) : (
+              <img
+                src={fields.profileImage}
+                alt="Profile"
+                className="w-full h-full rounded-full object-cover"
+              />
+            )}
           </div>
-          <h1 className="text-2xl font-bold">ANUSHKA SHUKLA</h1>
-          <p className="text-gray-500">Indore, India</p>
+          <button
+            onClick={() => toggleEdit("profileImage")}
+            className="text-blue-500 hover:text-blue-700 text-sm"
+          >
+            {isEditing.profileImage ? "Save" : "Edit"}
+          </button>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">BASIC INFO</h2>
-          </div>
-
-          <div className="space-y-6">
-            <div className="flex justify-between items-center border-b pb-4">
-              <div>
-                <label className="text-sm text-gray-500">NAME</label>
-                <p className="font-medium">ANUSHKA SHUKLA</p>
+        {/* Editable Fields */}
+        <div className="space-y-6">
+          {[
+            { label: "Name", field: "name", type: "text" },
+            { label: "Email", field: "email", type: "email" },
+            { label: "Phone Number", field: "phone", type: "text" },
+            { label: "Address", field: "address", type: "textarea" },
+            { label: "Date of Birth", field: "dob", type: "date" },
+          ].map(({ label, field, type }) => (
+            <div key={field} className="flex items-center justify-between">
+              <div className="w-3/4">
+                <label className="block text-sm font-medium text-gray-700">
+                  {label} <span className="text-red-500">*</span>
+                </label>
+                {isEditing[field] ? (
+                  type === "textarea" ? (
+                    <textarea
+                      value={fields[field]}
+                      onChange={(e) =>
+                        handleFieldChange(field, e.target.value)
+                      }
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      required
+                    />
+                  ) : (
+                    <input
+                      type={type}
+                      value={fields[field]}
+                      onChange={(e) =>
+                        handleFieldChange(field, e.target.value)
+                      }
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      required
+                    />
+                  )
+                ) : (
+                  <p className="mt-1 text-gray-900">{fields[field]}</p>
+                )}
               </div>
-              <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                EDIT
+              <button
+                onClick={() => toggleEdit(field)}
+                className="text-blue-500 hover:text-blue-700 text-sm"
+              >
+                {isEditing[field] ? "Save" : "Edit"}
               </button>
             </div>
-
-            <div className="flex justify-between items-center border-b pb-4">
-              <div>
-                <label className="text-sm text-gray-500">GENDER</label>
-                <p className="font-medium">FEMALE</p>
-              </div>
-              <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                EDIT
-              </button>
-            </div>
-
-            <div className="flex justify-between items-center border-b pb-4">
-              <div>
-                <label className="text-sm text-gray-500">LOCATION</label>
-                <p className="font-medium">INDORE, INDIA</p>
-              </div>
-              <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                EDIT
-              </button>
-            </div>
-
-            <div className="flex justify-between items-center border-b pb-4">
-              <div>
-                <label className="text-sm text-gray-500">BIRTHDAY</label>
-                <p className="font-medium">NOV 17, 2004</p>
-              </div>
-              <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                EDIT
-              </button>
-            </div>
-
-            <div className="flex justify-between items-center border-b pb-4">
-              <div>
-                <label className="text-sm text-gray-500">PROFESSION</label>
-                <p className="font-medium">AGENCY OWNER</p>
-              </div>
-              <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                EDIT
-              </button>
-            </div>
-
-            <div className="flex justify-between items-center">
-              <div>
-                <label className="text-sm text-gray-500">WEBSITE</label>
-                <p className="font-medium">agency.anushka.com</p>
-              </div>
-              <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                EDIT
-              </button>
-            </div>
-          </div>
+          ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        {/* Back to Dashboard Button */}
+        <div className="mt-8 flex justify-center">
           <button
-            onClick={() => navigate("/account")} // Navigate to Account page
-            className="flex-1 text-sm bg-blue-500 text-white py-2 rounded font-medium"
+            onClick={() => navigate("/dashboard")}
+            className="px-4 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700"
           >
-            ACCOUNT
+            Back to Dashboard
           </button>
-          <button
-            onClick={() => navigate("/dashboard")} // Update this line
-            className="bg-white p-4 rounded-lg shadow-md text-center hover:bg-gray-50"
-          >
-            <h3 className="font-medium">DASHBOARD</h3>
-          </button>
-          <button className="bg-white p-4 rounded-lg shadow-md text-center hover:bg-gray-50">
-            <h3 className="font-medium">WALLET</h3>
-          </button>
-          <button 
-          onClick={() => navigate(-1)} 
-          className="mt-6 flex items-center justify-center text-blue-500 text-lg hover:underline"
-        >
-          ← Back
-        </button>
         </div>
       </div>
     </div>
@@ -114,4 +136,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
