@@ -11,6 +11,7 @@ import Login from './componets/Login';
 import Dashboard from './componets/Dashboard';
 import ActiveRentals from './componets/ActiveRentals';
 import Wishlist from './componets/wishlist';
+import RentalHistory from './componets/RentalHistory';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/active-rentals" element={<ActiveRentals />} />
             <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/rental-history" element={<RentalHistory />} />
           </Routes>
           <Footer />
         </div>

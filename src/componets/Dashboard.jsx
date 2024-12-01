@@ -27,7 +27,7 @@ const Dashboard = () => {
         {/* Sidebar */}
         <div className="mb-8 md:mb-0 md:w-72">
           <div className="space-y-3">
-            {['ACTIVE RENTALS', 'RENTAL HISTORY', 'ACTIVE LISTINGS', 'CONNECT WALLET'].map((item, index) => (
+            {['ACTIVE RENTALS' , 'ACTIVE LISTINGS'].map((item, index) => (
               <button
                 key={index}
                 className="w-full text-left px-5 py-3 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 hover:text-black transition duration-200 font-medium"
@@ -35,6 +35,12 @@ const Dashboard = () => {
                 {item}
               </button>
             ))}
+              <button
+              onClick={() => navigate('/rental-history')}
+              className="w-full text-left px-5 py-3 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 hover:text-black transition duration-200 font-medium"
+            >
+              RENTAL HISTORY
+            </button>
              <button
               onClick={() => navigate('/wishlist')}
               className="w-full text-left px-5 py-3 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 hover:text-black transition duration-200 font-medium"
