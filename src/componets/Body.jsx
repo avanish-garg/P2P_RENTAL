@@ -1,6 +1,38 @@
 import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+const WalletSection = () => {
+  const [walletAddress, setWalletAddress] = useState(null);
+
+  // Function to connect to Petra Aptos Wallet
+  const connectWallet = async () => {
+    if (window.aptos) {
+      try {
+        const account = await window.aptos.connect();
+        setWalletAddress(account.address); // Set the connected Aptos wallet address
+      } catch (error) {
+        console.error("Error connecting to wallet:", error);
+      }
+    } else {
+      alert("Petra Aptos Wallet is not installed. Please install it to use this feature.");
+    }
+  };
+
+  return (
+    <div className="wallet-section bg-blue-100 py-8">
+      <h2 className="text-4xl font-bold text-center mb-6">Connect Your Wallet</h2>
+      <div className="text-center">
+        <button
+          onClick={connectWallet}
+          className="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg"
+        >
+          {walletAddress ? `Connected: ${walletAddress}` : "Connect Aptos Wallet"}
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const ReviewsSection = () => {
   return (
     <div className="bg-gray-50 py-12">
@@ -43,7 +75,6 @@ const FAQSection = () => {
 
 
 const Body = () => {
-  const [walletAddress, setWalletAddress] = useState(null);
   const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentImageIndexNewSection, setCurrentImageIndexNewSection] = useState(0);
@@ -99,20 +130,6 @@ const Body = () => {
   }, [newSectionImages.length]);
 
 
-  // Function to connect to MetaMask
-  const connectWallet = async () => {
-    if (window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-        setWalletAddress(accounts[0]); // Set the first account as the connected wallet
-      } catch (error) {
-        console.error("Wallet connection failed:", error);
-      }
-    } else {
-      alert("MetaMask is not installed. Please install it to use this feature.");
-    }
-  };
-
   return (
     <div>
       {/* Main Section */}
@@ -134,12 +151,6 @@ const Body = () => {
             className="bg-[#ffffff] text-black px-6 py-3 rounded-lg font-semibold hover:bg-[#0056b3] hover:text-[#ffffff]  transition duration-200"
           >
              Rent an Item
-          </button>
-          <button
-            onClick={connectWallet}
-            className="px-6 py-3 bg-[#ffffff] text-black rounded-lg font-semibold hover:bg-[#0056b3] hover:text-[#ffffff] transition duration-200"
-          >
-            {walletAddress ? `Connected: ${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}` : "Connect Wallet"}
           </button>
         </div>
       </div>
@@ -226,6 +237,8 @@ const Body = () => {
       <ReviewsSection />
       {/* Insert FAQ Section */}
       <FAQSection />
+      {/* Insert Wallet Section */}
+       <WalletSection />
     </div>
   );
 };

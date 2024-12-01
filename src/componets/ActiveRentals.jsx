@@ -38,7 +38,7 @@ const ActiveRentals = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h1 className="text-2xl font-bold text-white">Your Dashboard</h1> {/* Changed text color to white */}
+          <h1 className="text-2xl font-bold text-white">ACTIVE RENTALS</h1> {/* Changed text color to white */}
         </div>
       </div>
 
