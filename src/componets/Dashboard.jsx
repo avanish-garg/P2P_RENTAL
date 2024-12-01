@@ -27,17 +27,22 @@ const Dashboard = () => {
         {/* Sidebar */}
         <div className="mb-8 md:mb-0 md:w-72">
           <div className="space-y-3">
-            {['ACTIVE RENTALS', 'RENTAL HISTORY', 'ACTIVE LISTINGS', 'WISHLIST', 'CONNECT WALLET'].map((item, index) => (
+            {['ACTIVE RENTALS', 'RENTAL HISTORY', 'ACTIVE LISTINGS', 'CONNECT WALLET'].map((item, index) => (
               <button
                 key={index}
-                className="w-full text-left px-5 py-3 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 transition duration-200 font-medium"
+                className="w-full text-left px-5 py-3 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 hover:text-black transition duration-200 font-medium"
               >
                 {item}
               </button>
             ))}
+             <button
+              onClick={() => navigate('/wishlist')}
+              className="w-full text-left px-5 py-3 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 hover:text-black transition duration-200 font-medium"
+            >
+              WISHLIST
+            </button>
           </div>
         </div>
-
         {/* Main Area */}
         <div className="flex-grow flex justify-center items-center min-h-[200px]">
           <button
