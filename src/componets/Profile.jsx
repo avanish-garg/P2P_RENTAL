@@ -127,7 +127,7 @@ const Profile = () => {
             onClick={() => navigate("/dashboard")}
             className="px-4 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700"
           >
-            Back to Dashboard
+            Dashboard
           </button>
         </div>
       </div>

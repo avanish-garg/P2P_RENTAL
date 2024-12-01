@@ -12,6 +12,8 @@ import Dashboard from './componets/Dashboard';
 import ActiveRentals from './componets/ActiveRentals';
 import Wishlist from './componets/wishlist';
 import RentalHistory from './componets/RentalHistory';
+import ReviewPage from './componets/review-page';
+
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 function App() {
@@ -33,6 +35,7 @@ function App() {
             <Route path="/active-rentals" element={<ActiveRentals />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/rental-history" element={<RentalHistory />} />
+            <Route path="/review/:itemId" element={<ReviewPage />} />
           </Routes>
           <Footer />
         </div>

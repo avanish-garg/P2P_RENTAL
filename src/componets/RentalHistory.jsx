@@ -27,6 +27,10 @@ export default function RentalHistory() {
       owner: 'Bharat Doshi'
     }
   ];
+   const handleLeaveReview = (itemId, itemName) => {
+    navigate(`/review/${itemId}`, { state: { itemName } });
+  };
+
 
   return (
     <div className="min-h-screen bg-gray-50 pt-16">
@@ -65,9 +69,13 @@ export default function RentalHistory() {
                   <p className="text-gray-600 mt-2 md:mt-0">owner: {item.owner}</p>
                 </div>
                 <div className="mt-4">
-                  <button className="w-full py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                  <button 
+                    onClick={() => handleLeaveReview(item.id, item.name)}
+                    className="w-full py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
                     Leave a review
                   </button>
+
                 </div>
               </div>
             </div>
