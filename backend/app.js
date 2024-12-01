@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const { ethers } = require("ethers");  // Library for interacting with Ethereum blockchain
-const RentalNFT = require("./contracts/RentalNFT.json");  // ABI of the RentalNFT contract
+const RentalNFTABI = require("./RentalNFTABI.json");  // ABI of the RentalNFT contract
 const rentalRoutes = require("./routes/rentalRoutes");  // Import rental routes for CRUD operations
 const itemRoutes = require("./routes/itemRoutes");  // Import item routes for managing items in MongoDB
 
@@ -14,8 +14,8 @@ app.use(cors());  // Enables all CORS requests from any domain
 app.use(bodyParser.json());  // Parse incoming JSON requests
 
 // Blockchain Setup:
-// - Initialize provider using AMOY or any other RPC URL for the blockchain
-const provider = new ethers.JsonRpcProvider(process.env.AMOY_RPC_URL);  // RPC URL for AMOY testnet (can be other networks like Rinkeby)
+// Initialize provider using AMOY or any other RPC URL for the blockchain
+const provider = new ethers.JsonRpcProvider(process.env.AMOY_RPC_URL);  // RPC URL for AMOY testnet
 console.log("Connected to provider at:", process.env.AMOY_RPC_URL);  // Log the RPC URL to verify the connection
 
 // Initialize wallet with private key (stored securely in .env) and provider
@@ -23,10 +23,10 @@ const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);  // Ethereu
 console.log("Connected wallet address:", wallet.address);  // Log wallet address to verify it's correctly set up
 
 // Blockchain Contract instance:
-// - Initialize the contract with ABI and contract address from environment variables
+// Initialize the contract with ABI and contract address from environment variables
 const contract = new ethers.Contract(
     process.env.CONTRACT_ADDRESS,  // Smart contract address
-    RentalNFT.abi,  // ABI (Application Binary Interface) of the RentalNFT contract
+    RentalNFTABI.abi,  // ABI (Application Binary Interface) of the RentalNFT contract
     wallet  // Wallet to interact with the smart contract
 );
 
@@ -51,19 +51,40 @@ app.post("/api/mint", async (req, res) => {
 
 // Create Rental Endpoint: This endpoint will create a rental for an NFT
 app.post("/api/create-rental", async (req, res) => {
-    const { tokenId, duration, deposit } = req.body;  // Extract details from the request body
-    console.log(`Creating rental for tokenId: ${tokenId}, duration: ${duration} seconds, deposit: ${deposit} ETH`);
+    const { tokenId, duration, deposit, senderAddress } = req.body;  // Extract details from the request body
+    console.log(`Creating rental for tokenId: ${tokenId}, duration: ${duration} seconds, deposit: ${deposit} ETH, senderAddress: ${senderAddress}`);
 
     try {
-        // Call createRental function from the smart contract to create the rental
+        // Validate deposit value
+        if (!deposit || isNaN(deposit)) {
+            return res.status(400).json({ error: "Invalid deposit value" });
+        }
+
+        // Check if sender is the owner of the NFT (tokenId)
+        const owner = await contract.ownerOf(tokenId);
+        console.log("NFT Owner:", owner);
+
+        // Ensure that the sender is the owner of the token
+        if (owner.toLowerCase() !== senderAddress.toLowerCase()) {
+            return res.status(403).json({ error: "Sender is not the owner of the token" });
+        }
+
+        // Correct way to parse Ether in ethers 6.x
+        const depositInWei = ethers.parseEther(deposit.toString());  // In ethers 6.x, it's directly accessible as ethers.parseEther
+        console.log("Parsed deposit (in Wei):", depositInWei.toString());
+
+        // Call the createRental function from the smart contract
         const tx = await contract.createRental(
             tokenId, 
             duration, 
-            ethers.utils.parseEther(deposit)  // Convert deposit from ETH to Wei using ethers.js utility function
+            depositInWei,  // Pass deposit in Wei
+            {
+                gasLimit: 2000000  // Set the gas limit to 2 million (adjust as necessary)
+            }
         );
         await tx.wait();  // Wait for the transaction to be mined
-        console.log("Rental created successfully, transaction hash:", tx.hash);  // Log success and txHash
-        res.json({ message: "Rental created successfully", txHash: tx.hash });  // Send success response with tx hash
+        console.log("Rental created successfully, transaction hash:", tx.hash);
+        res.json({ message: "Rental created successfully", txHash: tx.hash });  // Send success response
     } catch (error) {
         console.error("Error creating rental:", error.message);  // Log any errors during rental creation
         res.status(500).json({ error: error.message });  // Send error response with the error message
@@ -76,9 +97,15 @@ app.post("/api/start-rental", async (req, res) => {
     console.log(`Starting rental for tokenId: ${tokenId}, deposit: ${deposit} ETH`);
 
     try {
+        // Validate deposit value
+        if (!deposit || isNaN(deposit)) {
+            return res.status(400).json({ error: "Invalid deposit value" });
+        }
+
         // Call startRental function from the smart contract to start the rental
         const tx = await contract.startRental(tokenId, {
-            value: ethers.utils.parseEther(deposit),  // Send ETH deposit to start the rental
+            value: ethers.parseEther(deposit.toString()),  // Send ETH deposit to start the rental
+            gasLimit: 2000000  // Set the gas limit to 2 million (adjust as necessary)
         });
         await tx.wait();  // Wait for the transaction to be mined
         console.log("Rental started successfully, transaction hash:", tx.hash);  // Log success and txHash
@@ -96,7 +123,9 @@ app.post("/api/end-rental", async (req, res) => {
 
     try {
         // Call endRental function from the smart contract to end the rental
-        const tx = await contract.endRental(tokenId);
+        const tx = await contract.endRental(tokenId, {
+            gasLimit: 2000000  // Set the gas limit to 2 million (adjust as necessary)
+        });
         await tx.wait();  // Wait for the transaction to be mined
         console.log("Rental ended successfully, transaction hash:", tx.hash);  // Log success and txHash
         res.json({ message: "Rental ended successfully", txHash: tx.hash });  // Send success response
