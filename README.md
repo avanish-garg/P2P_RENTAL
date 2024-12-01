@@ -37,8 +37,6 @@ npm install
 3. Configure Environment Variables
 Create a .env file in the root directory with the following:
 
-plaintext
-Copy code
 MUMBAI_RPC_URL=https://rpc-mumbai.maticvigil.com
 PRIVATE_KEY=your_wallet_private_key_here
 POLYGONSCAN_API_KEY=your_polygonscan_api_key_here
