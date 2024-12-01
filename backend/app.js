@@ -10,7 +10,9 @@ const itemRoutes = require("./routes/itemRoutes");  // Import item routes for ma
 const app = express();
 
 // Middleware for enabling CORS (Cross-Origin Resource Sharing) and parsing JSON data
-app.use(cors());  // Enables all CORS requests from any domain
+app.use(cors({
+    origin: ["https://yourfrontenddomain.com"]  // Restrict CORS to your frontend domain (update with your frontend domain)
+}));  
 app.use(bodyParser.json());  // Parse incoming JSON requests
 
 // Blockchain Setup:
@@ -40,9 +42,10 @@ app.post("/api/mint", async (req, res) => {
     try {
         // Call the mintNFT function from the smart contract
         const tx = await contract.mintNFT(to);  
-        await tx.wait();  // Wait for the transaction to be mined
+        const receipt = await tx.wait();  // Wait for the transaction to be mined
         console.log("Minting successful, transaction hash:", tx.hash);  // Log success and transaction hash
-        res.json({ message: "NFT minted successfully", txHash: tx.hash });  // Send a success response with the tx hash
+        console.log(`Transaction mined in block: ${receipt.blockNumber}`);
+        res.json({ message: "NFT minted successfully", txHash: tx.hash, blockNumber: receipt.blockNumber });  // Send a success response with the tx hash
     } catch (error) {
         console.error("Error minting NFT:", error.message);  // Log any errors during minting
         res.status(500).json({ error: error.message });  // Send error response with the error message
@@ -54,12 +57,15 @@ app.post("/api/create-rental", async (req, res) => {
     const { tokenId, duration, deposit, senderAddress } = req.body;  // Extract details from the request body
     console.log(`Creating rental for tokenId: ${tokenId}, duration: ${duration} seconds, deposit: ${deposit} ETH, senderAddress: ${senderAddress}`);
 
-    try {
-        // Validate deposit value
-        if (!deposit || isNaN(deposit)) {
-            return res.status(400).json({ error: "Invalid deposit value" });
-        }
+    // Validate input data
+    if (!tokenId || !duration || !deposit || !senderAddress) {
+        return res.status(400).json({ error: "Missing required fields" });
+    }
+    if (isNaN(deposit)) {
+        return res.status(400).json({ error: "Invalid deposit value" });
+    }
 
+    try {
         // Check if sender is the owner of the NFT (tokenId)
         const owner = await contract.ownerOf(tokenId);
         console.log("NFT Owner:", owner);
@@ -82,9 +88,10 @@ app.post("/api/create-rental", async (req, res) => {
                 gasLimit: 2000000  // Set the gas limit to 2 million (adjust as necessary)
             }
         );
-        await tx.wait();  // Wait for the transaction to be mined
+        const receipt = await tx.wait();  // Wait for the transaction to be mined
         console.log("Rental created successfully, transaction hash:", tx.hash);
-        res.json({ message: "Rental created successfully", txHash: tx.hash });  // Send success response
+        console.log(`Transaction mined in block: ${receipt.blockNumber}`);
+        res.json({ message: "Rental created successfully", txHash: tx.hash, blockNumber: receipt.blockNumber });  // Send success response
     } catch (error) {
         console.error("Error creating rental:", error.message);  // Log any errors during rental creation
         res.status(500).json({ error: error.message });  // Send error response with the error message
@@ -96,20 +103,21 @@ app.post("/api/start-rental", async (req, res) => {
     const { tokenId, deposit } = req.body;  // Extract tokenId and deposit from the request body
     console.log(`Starting rental for tokenId: ${tokenId}, deposit: ${deposit} ETH`);
 
-    try {
-        // Validate deposit value
-        if (!deposit || isNaN(deposit)) {
-            return res.status(400).json({ error: "Invalid deposit value" });
-        }
+    // Validate deposit value
+    if (!deposit || isNaN(deposit)) {
+        return res.status(400).json({ error: "Invalid deposit value" });
+    }
 
+    try {
         // Call startRental function from the smart contract to start the rental
         const tx = await contract.startRental(tokenId, {
             value: ethers.parseEther(deposit.toString()),  // Send ETH deposit to start the rental
             gasLimit: 2000000  // Set the gas limit to 2 million (adjust as necessary)
         });
-        await tx.wait();  // Wait for the transaction to be mined
+        const receipt = await tx.wait();  // Wait for the transaction to be mined
         console.log("Rental started successfully, transaction hash:", tx.hash);  // Log success and txHash
-        res.json({ message: "Rental started successfully", txHash: tx.hash });  // Send success response
+        console.log(`Transaction mined in block: ${receipt.blockNumber}`);
+        res.json({ message: "Rental started successfully", txHash: tx.hash, blockNumber: receipt.blockNumber });  // Send success response
     } catch (error) {
         console.error("Error starting rental:", error.message);  // Log any errors during rental start
         res.status(500).json({ error: error.message });  // Send error response with the error message
@@ -126,9 +134,10 @@ app.post("/api/end-rental", async (req, res) => {
         const tx = await contract.endRental(tokenId, {
             gasLimit: 2000000  // Set the gas limit to 2 million (adjust as necessary)
         });
-        await tx.wait();  // Wait for the transaction to be mined
+        const receipt = await tx.wait();  // Wait for the transaction to be mined
         console.log("Rental ended successfully, transaction hash:", tx.hash);  // Log success and txHash
-        res.json({ message: "Rental ended successfully", txHash: tx.hash });  // Send success response
+        console.log(`Transaction mined in block: ${receipt.blockNumber}`);
+        res.json({ message: "Rental ended successfully", txHash: tx.hash, blockNumber: receipt.blockNumber });  // Send success response
     } catch (error) {
         console.error("Error ending rental:", error.message);  // Log any errors during rental end
         res.status(500).json({ error: error.message });  // Send error response with the error message
