@@ -7,7 +7,7 @@ const Header = () => {
       <nav className="container mx-auto flex justify-between items-center h-full px-6"> {/* Changed py-4 to h-full */}
         {/* Logo Section */}
         <div className="flex items-center space-x-2">
-          <img src="./src/assets/logo.png" alt="Logo" className="h-10 w-auto object-contain" />
+          <img src="./src/assets/logo2.png" alt="Logo" className="h-10 w-auto object-contain" />
         </div>
         
         {/* Navigation Links */}
