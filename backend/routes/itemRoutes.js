@@ -1,8 +1,8 @@
-const express = require("express");
-const { mintNFT, createRental, startRental, endRental } = require("../controllers/rentalController");
-const Item = require("../models/Item");  // Import the Item model
+import { Router } from "express";
+import { mintNFT, createRental, startRental, endRental } from "../controllers/rentalController";
+import { findOne } from "../models/Item";  // Import the Item model
 
-const router = express.Router();
+const router = Router();
 
 // Mint NFT
 router.post("/mint", mintNFT);
@@ -20,7 +20,7 @@ router.post("/end-rental", endRental);
 router.get("/item/:tokenId", async (req, res) => {
     const { tokenId } = req.params;
     try {
-        const item = await Item.findOne({ tokenId });
+        const item = await findOne({ tokenId });
         if (!item) {
             return res.status(404).json({ error: "Item not found" });
         }
@@ -32,4 +32,4 @@ router.get("/item/:tokenId", async (req, res) => {
 
 // Add other routes as necessary for your app (e.g., user profile, etc.)
 
-module.exports = router;
+export default router;
