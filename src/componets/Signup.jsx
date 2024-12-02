@@ -65,6 +65,11 @@ const Signup = () => {
               <option value="female">Female</option>
               <option value="other">Other</option>
             </select>
+            <input
+              type="text"
+              placeholder="Enter the Wallet Address"
+              className="w-full p-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+            />
             <button
               type="submit"
               className="w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600"
