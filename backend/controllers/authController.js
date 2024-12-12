@@ -12,16 +12,22 @@ exports.signup = async (req, res) => {
     }
 
     try {
-        // Check if the user already exists
+        // Check if the user already exists with the same email
         const userExists = await User.findOne({ email });
         if (userExists) {
             return res.status(400).json({ message: 'User already exists with this email' });
         }
 
-        // Check if username already exists
+        // Check if the username already exists
         const usernameExists = await User.findOne({ username });
         if (usernameExists) {
             return res.status(400).json({ message: 'Username already taken' });
+        }
+
+        // Check if the wallet address already exists
+        const walletExists = await User.findOne({ walletAddress });
+        if (walletExists) {
+            return res.status(400).json({ message: 'Wallet address already in use' });
         }
 
         // Hash the password
@@ -42,7 +48,18 @@ exports.signup = async (req, res) => {
 
         await newUser.save();
 
-        res.status(201).json({ message: 'User created successfully' });
+        // Send response
+        res.status(201).json({ 
+            message: 'User created successfully',
+            user: {
+                id: newUser._id,
+                firstName: newUser.firstName,
+                lastName: newUser.lastName,
+                email: newUser.email,
+                username: newUser.username,
+                walletAddress: newUser.walletAddress
+            }
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error, please try again later' });

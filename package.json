@@ -24,6 +24,7 @@
     "hardhat": "^2.22.16"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "ethers": "^6.13.4"
   }
 }

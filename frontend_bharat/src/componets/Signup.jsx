@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const Signup = () => {
-  // State to manage form data
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -11,22 +10,30 @@ const Signup = () => {
     password: '',
     gender: '',
     walletAddress: '',
+    username: '', // Add username field here
   });
 
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Client-side validation
+    const { email, password, firstName, lastName, contactNumber, gender, walletAddress, username } = formData;
+    if (!email || !password || !firstName || !lastName || !contactNumber || !gender || !walletAddress || !username) {
+      return setError("All fields are required");
+    }
+
     try {
-      const response = await axios.post('https://ominous-zebra-9795rgjx6vqwcpvp7-5000.app.github.dev/api/auth/signup', formData);
+      // Adjust the URL for your production or development API
+      const response = await axios.post('http://localhost:5000/api/auth/signup', formData);
+
       setSuccess(true);
       setError(null);
       alert('Signup successful! Please log in.');
@@ -46,7 +53,6 @@ const Signup = () => {
       }}
     >
       <div className="flex flex-col md:flex-row shadow-lg rounded-lg bg-white overflow-hidden max-w-4xl w-full m-4">
-        {/* Left Section */}
         <div
           className="hidden md:block w-1/2"
           style={{
@@ -56,7 +62,6 @@ const Signup = () => {
           }}
         ></div>
 
-        {/* Right Section */}
         <div className="w-full md:w-1/2 p-8 pt-20">
           <h2 className="text-2xl font-semibold mb-4 text-center">Create an account</h2>
           <p className="text-sm text-center mb-6">
@@ -116,21 +121,27 @@ const Signup = () => {
               onChange={handleChange}
               className="w-full p-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
             >
-              <option value="" disabled>
-                Choose Gender
-              </option>
+              <option value="" disabled>Choose Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Other">Other</option>
             </select>
-            {/* <input
+            <input
               type="text"
               name="walletAddress"
               placeholder="Enter the Wallet Address"
               value={formData.walletAddress}
               onChange={handleChange}
               className="w-full p-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-            /> */}
+            />
+            <input
+              type="text"
+              name="username"
+              placeholder="Enter a Username"
+              value={formData.username}
+              onChange={handleChange}
+              className="w-full p-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+            />
             <button
               type="submit"
               className="w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600"
