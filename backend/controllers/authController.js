@@ -4,24 +4,31 @@ const jwt = require('jsonwebtoken');
 
 // Sign Up Controller
 exports.signup = async (req, res) => {
-    const { firstName, lastName, contactNumber, email, password, gender, walletAddress } = req.body;
+    const { firstName, lastName, contactNumber, email, password, gender, walletAddress, username } = req.body;
 
     // Validation
-    if (!email || !password || !firstName || !lastName || !contactNumber || !gender || !walletAddress) {
+    if (!email || !password || !firstName || !lastName || !contactNumber || !gender || !walletAddress || !username) {
         return res.status(400).json({ message: 'All fields are required' });
     }
 
     try {
+        // Check if the user already exists
         const userExists = await User.findOne({ email });
         if (userExists) {
-            return res.status(400).json({ message: 'User already exists' });
+            return res.status(400).json({ message: 'User already exists with this email' });
+        }
+
+        // Check if username already exists
+        const usernameExists = await User.findOne({ username });
+        if (usernameExists) {
+            return res.status(400).json({ message: 'Username already taken' });
         }
 
         // Hash the password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // Create and save user
+        // Create and save new user
         const newUser = new User({
             firstName,
             lastName,
@@ -29,7 +36,8 @@ exports.signup = async (req, res) => {
             email,
             password: hashedPassword,
             gender,
-            walletAddress
+            walletAddress,
+            username // Ensure username is passed as part of the user data
         });
 
         await newUser.save();
@@ -37,7 +45,7 @@ exports.signup = async (req, res) => {
         res.status(201).json({ message: 'User created successfully' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error, please try again later' });
     }
 };
 
@@ -45,13 +53,17 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Email and password are required' });
+    }
+
     try {
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        // Compare passwords
+        // Compare the password with the hashed password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid credentials' });
@@ -63,6 +75,6 @@ exports.login = async (req, res) => {
         res.json({ message: 'Login successful', token });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error, please try again later' });
     }
 };
