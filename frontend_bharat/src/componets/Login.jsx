@@ -1,6 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const Login = () => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+
+  // Handle input change
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Sending login request to backend
+      const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+
+      // On successful login, store the token in local storage
+      localStorage.setItem('authToken', response.data.token);
+
+      setSuccess(true);
+      setError(null);
+
+      alert('Login successful!');
+      window.location.href = '/dashboard'; // Redirect to the dashboard or any protected page
+    } catch (err) {
+      // If an error occurs, set error message
+      setError(err.response?.data?.message || 'An error occurred during login.');
+    }
+  };
+
   return (
     <div
       className="flex justify-center items-center min-h-screen"
@@ -14,14 +51,25 @@ const Login = () => {
         {/* Left Section */}
         <div className="w-full md:w-1/2 p-8 pt-20">
           <h2 className="text-2xl font-semibold mb-4 text-center">Login</h2>
-          <p className="text-sm text-center mb-6">Don&apos;t have an account? <a href="/signup" className="text-blue-500">Sign up</a>
+          <p className="text-sm text-center mb-6">
+            Don&apos;t have an account? <a href="/signup" className="text-blue-500">Sign up</a>
           </p>
-          <form>
+
+          {/* Display error if exists */}
+          {error && <div className="text-red-500 mb-4">{error}</div>}
+
+          {/* Display success message */}
+          {success && <div className="text-green-500 mb-4">Login successful!</div>}
+
+          <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 mb-2" htmlFor="email">Email</label>
               <input
                 type="email"
                 id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 placeholder="Enter your email"
                 required
@@ -32,6 +80,9 @@ const Login = () => {
               <input
                 type="password"
                 id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 placeholder="Enter your password"
                 required
