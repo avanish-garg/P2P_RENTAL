@@ -1,7 +1,6 @@
 // services/ethereumService.js
-import { ethers } from "ethers";
-import dotenv from "dotenv";
-dotenv.config();
+const { ethers } = require("ethers");  // Use require instead of import
+require("dotenv").config();  // Keep dotenv as is
 
 // Set up provider and wallet
 const provider = new ethers.JsonRpcProvider(process.env.AMOY_RPC_URL);
@@ -44,7 +43,7 @@ async function createRental(tokenId, duration, deposit) {
 // Start rental (with deposit)
 async function startRental(tokenId, deposit) {
     try {
-        // Fix for ethers v6.x - use parseEther correctly
+        // Fix for ethers v6.x - use parseUnits correctly
         const tx = await rentalNFT.startRental(tokenId, { value: ethers.parseUnits(deposit.toString(), 'ether') });
         await tx.wait();
         return tx.hash;
@@ -64,7 +63,7 @@ async function endRental(tokenId) {
     }
 }
 
-export {
+module.exports = {
     mintNFT,
     createRental,
     startRental,
