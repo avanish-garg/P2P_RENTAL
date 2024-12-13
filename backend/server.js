@@ -1,9 +1,11 @@
+// server.js
+
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authroutes');
-const rentalRoutes = require('./routes/rentalRoutes');
+const rentalRoutes = require('./routes/rentalRoutes'); // Rental routes
 const profileRoutes = require('./routes/profileRoutes'); // Profile routes
 
 const app = express();

@@ -1,11 +1,50 @@
+// routes/rentalRoutes.js
 const express = require('express');
-const { startRental, endRental, getActiveRentals } = require('../controllers/rentalController');
-const authMiddleware = require('../middlewares/authMiddleware');
-
 const router = express.Router();
+const ethereumService = require('../services/ethereumService');
 
-router.post('/start', authMiddleware, startRental);  // Start a new rental (requires authentication)
-router.post('/end', authMiddleware, endRental);      // End an active rental (requires authentication)
-router.get('/active', authMiddleware, getActiveRentals);  // Get active rentals for user (requires authentication)
+// Route to mint an NFT
+router.post('/mint', async (req, res) => {
+    try {
+        const { to } = req.body;
+        const txHash = await ethereumService.mintNFT(to);
+        res.json({ success: true, txHash });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// Route to create rental
+router.post('/createRental', async (req, res) => {
+    try {
+        const { tokenId, duration, deposit } = req.body;
+        const txHash = await ethereumService.createRental(tokenId, duration, deposit);
+        res.json({ success: true, txHash });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// Route to start rental
+router.post('/startRental', async (req, res) => {
+    try {
+        const { tokenId, deposit } = req.body;
+        const txHash = await ethereumService.startRental(tokenId, deposit);
+        res.json({ success: true, txHash });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// Route to end rental
+router.post('/endRental', async (req, res) => {
+    try {
+        const { tokenId } = req.body;
+        const txHash = await ethereumService.endRental(tokenId);
+        res.json({ success: true, txHash });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
 
 module.exports = router;
