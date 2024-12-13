@@ -10,29 +10,29 @@ const ListItem = () => {
   const [walletConnected, setWalletConnected] = useState(false);
   const [images, setImages] = useState([]); // Array to store image files
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', { title, description, price, specifications,images });
+    console.log('Form submitted:', { title, description, price, specifications, images });
   };
 
   const connectWallet = async () => {
-    if (window.ethereum) {
+    if (window.aptos) {
       try {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const account = await window.aptos.connect();
+        console.log('Connected to Petra wallet:', account);
         setWalletConnected(true);
       } catch (error) {
-        console.error('Failed to connect wallet:', error);
+        console.error('Failed to connect to Petra wallet:', error);
       }
     } else {
-      alert('Please install MetaMask to use this feature');
+      alert('Please install the Petra Aptos Wallet extension to use this feature');
     }
   };
+
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     setImages((prevImages) => [...prevImages, ...files].slice(0, 5)); // Limit to 5 images
   };
-
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100 p-4 pt-20">
@@ -113,7 +113,7 @@ const ListItem = () => {
             >
               {walletConnected ? 'WALLET CONNECTED' : 'CONNECT WALLET'}
             </button>
-            <p className="text-sm text-gray-500 mt-1">Accepted Wallet: MetaMask</p>
+            <p className="text-sm text-gray-500 mt-1">Accepted Wallet: Petra Aptos Wallet</p>
           </div>
           <button
             type="button"
