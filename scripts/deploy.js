@@ -1,22 +1,23 @@
-const hre = require("hardhat");
+const { ethers } = require("hardhat");
 
 async function main() {
-    // Step 1: Get the Contract Factory
-    console.log("Deploying RentalNFT contract...");
-    const RentalNFT = await hre.ethers.getContractFactory("RentalNFT");
+  // Get the contract factory
+  const RentalNFTFactory = await ethers.getContractFactory("RentalNFT");
 
-    // Step 2: Deploy the Contract
-    const rentalNFT = await RentalNFT.deploy();
+  console.log("Deploying contract...");
+  
+  // Deploy the contract
+  const rentalNFT = await RentalNFTFactory.deploy();
 
-    // Step 3: Wait for the deployment to be completed
-    await rentalNFT.waitForDeployment();
+  // Wait for the contract to be deployed
+  await rentalNFT.waitForDeployment();  // This method will ensure that the contract is deployed
 
-    // Step 4: Log the deployed contract address
-    console.log("RentalNFT deployed to:", rentalNFT.target);
+  console.log(`Contract deployed to: ${rentalNFT.target}`);  // Use 'target' instead of 'address' for ethers v6.
 }
 
-// Execute the deployment script and handle errors
-main().catch((error) => {
-    console.error("Error during deployment:", error);
-    process.exitCode = 1;
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

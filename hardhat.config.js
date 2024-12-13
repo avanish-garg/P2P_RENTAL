@@ -10,6 +10,6 @@ module.exports = {
         },
     },
     etherscan: {
-        apiKey: process.env.POLYGONSCAN_API_KEY,
+        apiKey: process.env.POLYGONSCAN_API_KEY,  // Optional, used for contract verification on PolygonScan
     },
 };

@@ -18,8 +18,12 @@ contract RentalNFT is ERC721, Ownable {
 
     uint256 private _tokenIdCounter;
 
-    // Update to pass the initialOwner address to Ownable constructor
-    constructor() ERC721("RentalNFT", "RNT") Ownable(msg.sender) {
+    // Events
+    event RentalCreated(uint256 tokenId, address owner, uint256 duration, uint256 deposit);
+    event RentalStarted(uint256 tokenId, address renter, uint256 deposit);
+    event RentalEnded(uint256 tokenId, address renter);
+
+    constructor() ERC721("RentalNFT", "RNT") Ownable() {
         _tokenIdCounter = 0;
     }
 
@@ -39,6 +43,8 @@ contract RentalNFT is ERC721, Ownable {
             endTime: block.timestamp + duration,
             deposit: deposit
         });
+
+        emit RentalCreated(tokenId, msg.sender, duration, deposit);  // Emit event
     }
 
     function startRental(uint256 tokenId) public payable {
@@ -46,18 +52,21 @@ contract RentalNFT is ERC721, Ownable {
         require(msg.value == rentals[tokenId].deposit, "Incorrect deposit");
 
         rentals[tokenId].renter = msg.sender;
-        escrow[msg.sender] += msg.value; // Add deposit to escrow
+        escrow[msg.sender] += msg.value;
+
+        emit RentalStarted(tokenId, msg.sender, msg.value);  // Emit event
     }
 
     function endRental(uint256 tokenId) public {
         require(rentals[tokenId].renter == msg.sender, "Not the renter");
         require(block.timestamp >= rentals[tokenId].endTime, "Rental period not over");
 
-        // Release deposit
         uint256 deposit = rentals[tokenId].deposit;
         escrow[msg.sender] -= deposit;
         payable(msg.sender).transfer(deposit);
 
         rentals[tokenId].renter = address(0);
+
+        emit RentalEnded(tokenId, msg.sender);  // Emit event
     }
 }
