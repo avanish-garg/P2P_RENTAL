@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';  // Use for navigation without page reload
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ const Login = () => {
 
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();  // Hook for programmatic navigation
 
   // Handle input change
   const handleChange = (e) => {
@@ -24,14 +26,20 @@ const Login = () => {
       // Sending login request to backend
       const response = await axios.post('http://localhost:5000/api/auth/login', formData);
 
-      // On successful login, store the token in local storage
-      localStorage.setItem('authToken', response.data.token);
+      // Check if the token exists in the response
+      if (response.data.token) {
+        // Store token in localStorage
+        localStorage.setItem('authToken', response.data.token);
 
-      setSuccess(true);
-      setError(null);
+        // Set success state and reset error
+        setSuccess(true);
+        setError(null);
 
-      alert('Login successful!');
-      window.location.href = '/dashboard'; // Redirect to the dashboard or any protected page
+        alert('Login successful!');
+        
+        // Redirect to the dashboard or any protected page
+        navigate('/dashboard');  // Using navigate instead of window.location.href
+      }
     } catch (err) {
       // If an error occurs, set error message
       setError(err.response?.data?.message || 'An error occurred during login.');

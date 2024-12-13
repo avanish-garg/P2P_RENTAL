@@ -4,6 +4,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authroutes');
 const rentalRoutes = require('./routes/rentalRoutes');
+const profileRoutes = require('./routes/profileRoutes'); // Profile routes
 
 const app = express();
 
@@ -11,32 +12,38 @@ const app = express();
 connectDB();
 
 // CORS configuration
-const allowedOrigins = ['http://localhost:5173', 'https://yourfrontenddomain.com']; // Add your frontend domain here
-
-
+const allowedOrigins = ['http://localhost:5173', 'https://yourfrontenddomain.com']; // Replace with your actual frontend domain
 const corsOptions = {
   origin: (origin, callback) => {
-    // Check if the origin is allowed
     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true, // If you need to send cookies or authorization headers
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Explicitly allow OPTIONS
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token'], // Allow necessary headers
+  credentials: true, // Allow credentials (cookies, authorization headers)
 };
 
-app.use(cors(corsOptions)); // Enable CORS with the specified options
-
-app.use(express.json());  // Middleware to parse JSON requests
+// Middleware
+app.use(cors(corsOptions));  // Enable CORS with the specified options
+app.use(express.json());     // Middleware to parse JSON requests
 
 // Routes
 app.use('/api/auth', authRoutes);      // User routes (signup/login)
 app.use('/api/rentals', rentalRoutes); // Rental routes (start/end rentals)
+app.use('/api/profile', profileRoutes); // Profile routes
 
 // Example protected route
 app.get('/api/protected', require('./middlewares/authMiddleware'), (req, res) => {
     res.json({ message: 'Protected route accessed', user: req.user });
+});
+
+// Global Error Handling Middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);  // Log the error stack
+    res.status(500).json({ message: 'Something went wrong!' });
 });
 
 const PORT = process.env.PORT || 5000;

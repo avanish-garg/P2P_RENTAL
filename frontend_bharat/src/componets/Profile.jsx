@@ -1,39 +1,86 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Profile = () => {
   const navigate = useNavigate();
-
-  // State for editable fields
   const [fields, setFields] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "123-456-7890",
-    address: "123 Main Street, Springfield",
-    dob: "1990-01-01",
-    profileImage: "./src/assets/profile.jpeg", // Initial profile image
+    firstName: "",
+    lastName: "",
+    contactNumber: "",
+    email: "",
+    gender: "",
+    walletAddress: "",
+    username: "",
+    profileImage: "./src/assets/profile.jpeg", // Default profile image
   });
-
   const [isEditing, setIsEditing] = useState({
-    name: false,
+    firstName: false,
+    lastName: false,
+    contactNumber: false,
     email: false,
-    phone: false,
-    address: false,
-    dob: false,
+    gender: false,
+    walletAddress: false,
+    username: false,
     profileImage: false,
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Handler for toggling edit mode
+  // Fetch user data on component mount
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+          navigate("/login");
+          return;
+        }
+
+        const response = await axios.get("http://localhost:5000/api/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Log the response to check the structure
+        console.log("API Response Data: ", response.data);
+
+        // Access data from the nested `user` object
+        const userData = response.data.user;
+        
+        // Update the state using values from the `user` object
+        setFields({
+          firstName: userData.firstName || "",
+          lastName: userData.lastName || "",
+          contactNumber: userData.contactNumber || "",
+          email: userData.email || "",
+          gender: userData.gender || "",
+          walletAddress: userData.walletAddress || "",
+          username: userData.username || "",
+          profileImage: userData.profileImage || "./src/assets/profile.jpeg", // Default profile image if not available
+        });
+        setLoading(false);
+      } catch (err) {
+        setError("Failed to fetch user data.");
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [navigate]);
+
+  // Toggle edit mode for fields
   const toggleEdit = (field) => {
     setIsEditing((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  // Handler for updating field values
+  // Update field values
   const handleFieldChange = (field, value) => {
     setFields((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Handler for updating profile image
+  // Update profile image
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -43,10 +90,27 @@ const Profile = () => {
     }
   };
 
+  // Display loading or error states
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div>Loading...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div>{error}</div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 pt-20 px-4 flex flex-col items-center">
       <div className="max-w-2xl w-full bg-white p-8 rounded shadow">
-        {/* Profile Header */}
+        {/* Profile Image */}
         <div className="flex flex-col items-center mb-8">
           <div className="relative w-32 h-32 mb-4">
             {isEditing.profileImage ? (
@@ -54,7 +118,7 @@ const Profile = () => {
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                className="block w-full text-sm text-gray-500 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
               />
             ) : (
               <img
@@ -75,11 +139,13 @@ const Profile = () => {
         {/* Editable Fields */}
         <div className="space-y-6">
           {[
-            { label: "Name", field: "name", type: "text" },
+            { label: "First Name", field: "firstName", type: "text" },
+            { label: "Last Name", field: "lastName", type: "text" },
+            { label: "Contact Number", field: "contactNumber", type: "text" },
             { label: "Email", field: "email", type: "email" },
-            { label: "Phone Number", field: "phone", type: "text" },
-            { label: "Address", field: "address", type: "textarea" },
-            { label: "Date of Birth", field: "dob", type: "date" },
+            { label: "Gender", field: "gender", type: "text" },
+            { label: "Wallet Address", field: "walletAddress", type: "text" },
+            { label: "Username", field: "username", type: "text" },
           ].map(({ label, field, type }) => (
             <div key={field} className="flex items-center justify-between">
               <div className="w-3/4">
@@ -87,26 +153,13 @@ const Profile = () => {
                   {label} <span className="text-red-500">*</span>
                 </label>
                 {isEditing[field] ? (
-                  type === "textarea" ? (
-                    <textarea
-                      value={fields[field]}
-                      onChange={(e) =>
-                        handleFieldChange(field, e.target.value)
-                      }
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      required
-                    />
-                  ) : (
-                    <input
-                      type={type}
-                      value={fields[field]}
-                      onChange={(e) =>
-                        handleFieldChange(field, e.target.value)
-                      }
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      required
-                    />
-                  )
+                  <input
+                    type={type}
+                    value={fields[field]}
+                    onChange={(e) => handleFieldChange(field, e.target.value)}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    required
+                  />
                 ) : (
                   <p className="mt-1 text-gray-900">{fields[field]}</p>
                 )}
@@ -121,7 +174,7 @@ const Profile = () => {
           ))}
         </div>
 
-        {/* Back to Dashboard Button */}
+        {/* Dashboard Button */}
         <div className="mt-8 flex justify-center">
           <button
             onClick={() => navigate("/dashboard")}

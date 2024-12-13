@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     gender: { type: String, enum: ['Male', 'Female', 'Other'], required: true },
     walletAddress: { type: String, required: true, unique: true },
-    username: { type: String, unique: true, required: true },  // Ensuring username is unique and required
+    username: { type: String, unique: true, required: true },
     createdAt: { type: Date, default: Date.now }
 });
 
