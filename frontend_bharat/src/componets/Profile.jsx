@@ -177,7 +177,7 @@ const Profile = () => {
         {/* Dashboard Button */}
         <div className="mt-8 flex justify-center">
           <button
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/")}
             className="px-4 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700"
           >
             Dashboard

@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 const DetailPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { itemData } = location.state || {};
+  const { itemData } = location.state || {};  // Assumes itemData contains the item details
 
   if (!itemData) {
     return (
@@ -19,6 +19,9 @@ const DetailPage = () => {
       </div>
     );
   }
+
+  // Assign a rental ID by default (e.g., 1)
+  const rentalId = itemData.id || Math.floor(Math.random() * 1000); // You can replace this with an actual id from your data
 
   const { title, description, price, owner, specifications, image } = itemData;
 
@@ -36,6 +39,12 @@ const DetailPage = () => {
         <div className="text-center mb-4">
           <h1 className="text-2xl font-bold text-gray-800 mb-2">{title}</h1>
           <p className="text-gray-600">{description}</p>
+        </div>
+
+        {/* Rental ID Display */}
+        <div className="flex justify-between items-center bg-yellow-100 p-4 rounded-lg shadow-inner mb-4">
+          <h2 className="text-lg font-semibold text-yellow-900">Rental ID:</h2>
+          <p className="text-xl font-bold text-yellow-800">{rentalId}</p>
         </div>
 
         <div className="flex justify-between items-center bg-blue-100 p-4 rounded-lg shadow-inner mb-4">
@@ -68,6 +77,7 @@ const DetailPage = () => {
 
         <div className="mt-6 flex justify-center gap-4">
           <button 
+            onClick={() => navigate('/start-rental', { state: { itemData, rentalId } })} // Pass rentalId to the StartRental page
             className="bg-blue-600 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-700 transition-colors"
             aria-label="Rent this item now"
           >
@@ -93,4 +103,3 @@ const DetailPage = () => {
 };
 
 export default DetailPage;
-

@@ -38,7 +38,7 @@ const Login = () => {
         alert('Login successful!');
         
         // Redirect to the dashboard or any protected page
-        navigate('/dashboard');  // Using navigate instead of window.location.href
+        navigate('/');  // Using navigate instead of window.location.href
       }
     } catch (err) {
       // If an error occurs, set error message

@@ -18,7 +18,7 @@ const Footer = () => {
           </button>
         </div>
       </div>
-      <p>&copy; {new Date().getFullYear()} Your Company. All rights reserved.</p>
+      <p>&copy;Aptorent {new Date().getFullYear()} All rights reserved.</p>
     </div>
   )
 }

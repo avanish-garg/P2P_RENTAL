@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const WalletSection = () => {
@@ -73,15 +73,12 @@ const FAQSection = () => {
   );
 };
 
-
 const Body = () => {
   const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentImageIndexNewSection, setCurrentImageIndexNewSection] = useState(0);
   const [fadeIn, setFadeIn] = useState(true);
   const [fadeInNewSection, setFadeInNewSection] = useState(true);
-
-
 
   const images = [
     "src/assets/Cycle.jpeg",
@@ -102,7 +99,7 @@ const Body = () => {
   ];
 
   // Cycle through images for the Continuation Section
- useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       setFadeIn(false); // Start fade-out
       setTimeout(() => {
@@ -129,13 +126,13 @@ const Body = () => {
     return () => clearInterval(interval); // Cleanup on component unmount
   }, [newSectionImages.length]);
 
-
   return (
     <div>
       {/* Main Section */}
       <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-[#0d1b2a] via-[#1e3a5f] to-[#4682b4] text-center text-white">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
-          Share What You Own, Rent What You Need – Powered by Web3
+        AptoRent <br /><br />  
+        Share What You Own, Rent What You Need <br /> – Powered by Web3
         </h1>
         <div className="flex space-x-4 mt-6">
           <button 
@@ -151,6 +148,21 @@ const Body = () => {
             className="bg-[#ffffff] text-black px-6 py-3 rounded-lg font-semibold hover:bg-[#0056b3] hover:text-[#ffffff]  transition duration-200"
           >
              Rent an Item
+          </button>
+
+          {/* Start and End Rental Buttons */}
+          <button
+            onClick={() => navigate("/start-rental")}
+            className="bg-[#ffffff] text-black px-6 py-3 rounded-lg font-semibold hover:bg-[#0056b3] hover:text-[#ffffff] transition duration-200"
+          >
+            Start Rental
+          </button>
+
+          <button
+            onClick={() => navigate("/end-rental")}
+            className="bg-[#ffffff] text-black px-6 py-3 rounded-lg font-semibold hover:bg-[#0056b3] hover:text-[#ffffff] transition duration-200"
+          >
+            End Rental
           </button>
         </div>
       </div>
@@ -196,49 +208,40 @@ const Body = () => {
       </div>
        {/* New Section */}
       <div className="flex flex-col md:flex-row items-center justify-between bg-white py-12">
-        {/* Left Side (Image) */}
-        <div className="max-w-5xl mx-auto p-6 mt-8">
-        <div
-          className={`transition-opacity duration-500 ${
-            fadeInNewSection ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <img
-            src={newSectionImages[currentImageIndexNewSection]}
-            alt={`Slide ${currentImageIndexNewSection}`}
-            className="w-full h-[500px] object-cover rounded-lg shadow-xl"
-          />
-        </div>
-      </div>
-
-        {/* Right Side (Text) */}
         <div className="md:w-1/2 p-8">
-          <h2 className="text-5xl font-bold text-gray-800 mb-4">
-             Looking for a quick solution? Rent what you need, when you need it.
+          <h2 className="text-4xl font-bold text-left text-gray-800 mb-4">
+            Rent what you need, earn with what you own!
           </h2>
-          <p className="text-gray-600 text-2xl font-semibold mb-6">
-           Double click the image placeholders to add images. Do the same for any text, then tweak styles and publish.
+          <p className="text-gray-600 text-2xl text-left font-semibold mb-6">
+            Looking for the best deals? Start renting now!
           </p>
           <div className="flex space-x-4">
-            <button 
+            <button
               onClick={() => navigate('/signup')}
-              className="px-6 py-3 bg-[#000000] text-white rounded-lg 
-              font-bold hover:bg-[#0056b3] transition duration-200"
+              className="px-6 py-3 bg-[#000000] text-white rounded-lg font-bold hover:bg-[#0056b3] transition duration-200"
             >
-              Get Started
-            </button>
-            <button className="px-6 py-3 bg-[#bababa] text-[#000000] border rounded-lg font-bold hover:bg-[#0056b3] hover:text-[#ffffff] transition duration-200">
-              Learn More
+              Start Your Journey
             </button>
           </div>
         </div>
+        <div className="max-w-5xl mx-auto p-6">
+          <div
+            className={`transition-opacity duration-500 ${
+              fadeInNewSection ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <img
+              src={newSectionImages[currentImageIndexNewSection]}
+              alt={`New Section Slide ${currentImageIndexNewSection}`}
+              className="w-full h-[500px] object-cover rounded-lg shadow-xl"
+            />
+          </div>
+        </div>
       </div>
-       {/* Insert Review Section */}
+
+      <WalletSection />
       <ReviewsSection />
-      {/* Insert FAQ Section */}
       <FAQSection />
-      {/* Insert Wallet Section */}
-       <WalletSection />
     </div>
   );
 };
