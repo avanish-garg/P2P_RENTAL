@@ -128,5 +128,5 @@ We welcome contributions to improve the platform! If you would like to contribut
 
 ### **License**
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+©Aptorent 2024 All rights reserved
 
