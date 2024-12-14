@@ -1,86 +1,132 @@
 
-# **Decentralized Peer-to-Peer Rental System for Everyday Items**
 
-## **Project Description**
+# P2P Rental - Decentralized Rental System
 
-The **Decentralized Peer-to-Peer Rental System** is a Web3-based platform that allows users to rent out and borrow everyday items (e.g., tools, cameras, electronics) securely and transparently. The system leverages blockchain technology to ensure trust, transparency, and decentralized escrow management.
+## Overview
 
-### **Key Features**
-- **NFT-Based Ownership**: Each rental item is tokenized as an NFT, providing traceable and secure access during the rental period.
-- **Smart Contracts for Rentals**: Handles rental agreements, payments, deposits, and escrow functionality.
-- **IPFS Integration**: Decentralized storage of item metadata such as descriptions, images, and terms.
-- **MERN Stack**: Combines React (frontend), Node.js + Express (backend), and MongoDB (database) for scalability and a user-friendly interface.
+The **P2P Rental** platform is a **decentralized, blockchain-powered** solution that enables individuals to rent out valuable, underutilized items securely and transparently. Utilizing **smart contracts** and **NFTs**, this platform ensures trust between renters and owners, eliminating the need for intermediaries and providing a secure, seamless rental experience.
+
+## Features
+
+- **Decentralized Rentals**: Rent items directly from other users without any intermediaries.
+- **Blockchain & Smart Contracts**: Ensures transparent transactions and automatic handling of deposits and rental terms.
+- **NFT-based Ownership**: Each rental item is represented as an NFT, ensuring secure and traceable temporary ownership.
+- **Secure Payments**: Payments are handled via smart contracts with escrow functionality to ensure both parties' security.
+- **User Rating & History**: Ratings and rental history allow users to build trust within the platform.
+
+## Problem Statement
+
+Many valuable items, such as cameras, tools, and sports equipment, are underused and could be rented out to others for short periods. However, traditional rental systems often lack transparency, are cumbersome to use, and involve high fees. Moreover, ensuring the safety and fair payment for such rentals can be difficult.
+
+## Solution
+
+This platform offers a **secure, decentralized, peer-to-peer rental system** where:
+- **Users can list items for rent** (such as tools, cameras, electronics, etc.).
+- **Renters can browse available items**, agree to rental terms, and make payments securely using **smart contracts**.
+- **NFTs** represent temporary ownership, making transactions transparent and traceable.
+- **Deposits are handled** via the blockchain to ensure the safety of both parties.
+
+## Tech Stack
+
+- **Frontend**: React.js for the user interface, making it easy to browse, list, and manage rentals.
+- **Backend**: Node.js, Express.js for handling API requests, and MongoDB for storing user profiles and rental data.
+- **Blockchain**: Ethereum (or Aptos for scalability), leveraging **smart contracts** for managing rental agreements and payments.
+- **NFTs**: Smart contracts mint NFTs to represent the ownership of rental items.
+- **Storage**: IPFS for decentralized file storage (item descriptions and images).
+
+## How It Works
+
+### **User Journey**
+
+1. **Sign Up**: Create an account and connect your wallet (e.g., MetaMask).
+2. **List an Item**: Owners can list items for rent by providing a description, images, and rental terms.
+3. **Browse Rentals**: Renters can browse available items, select one, and request a rental agreement.
+4. **Secure Payment**: Payment and deposit are handled through the smart contract, ensuring transparency and fairness.
+5. **NFT Ownership**: Renters receive an NFT representing ownership of the rented item for the duration of the rental.
+6. **Return Item**: At the end of the rental period, the renter returns the item, and the security deposit is refunded via the smart contract.
+
+### **Smart Contracts**
+
+- **Rental Agreements**: Automatically execute agreements, set rental terms, and handle deposits.
+- **Escrow**: Funds are held in escrow until the rental agreement is completed.
+- **NFT Ownership**: Minting NFTs for temporary ownership, ensuring that renters have valid access to the item during the rental period.
+
+## Installation
+
+To set up the project locally, follow these steps:
+
+### **Prerequisites**
+
+- **Node.js** (v14 or later)
+- **MongoDB** (or use a hosted solution)
+- **Ethereum Wallet** (e.g., MetaMask) for blockchain integration
+- **Truffle or Hardhat** (for Ethereum smart contract deployment)
+
+### **Steps to Run Locally**
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/avanish-garg/P2P_RENTAL.git
+   cd P2P_RENTAL
+   ```
+
+2. Install backend dependencies:
+   ```bash
+   cd backend
+   npm install
+   ```
+
+3. Set up environment variables:
+   - Create a `.env` file in the `backend` directory and add the following:
+     ```
+     MONGODB_URI=your-mongodb-uri
+     PRIVATE_KEY=your-wallet-private-key
+     AMOY_RPC_URL=your-ethereum-rpc-url
+     CONTRACT_ADDRESS=your-smart-contract-address
+     ```
+
+4. Start the backend server:
+   ```bash
+   npm start
+   ```
+
+5. Install frontend dependencies:
+   ```bash
+   cd ../frontend
+   npm install
+   ```
+
+6. Start the frontend server:
+   ```bash
+   npm start
+   ```
+
+### **Deploying to Production**
+
+- The backend and frontend can be deployed on services like **Heroku** or **AWS** for the server and **IPFS** for decentralized storage.
+- Use **Truffle** or **Hardhat** to deploy your smart contracts to a testnet or mainnet.
+
+## Contributing
+
+We welcome contributions to improve the platform! If you would like to contribute:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-name`).
+3. Commit your changes (`git commit -am 'Add new feature'`).
+4. Push to the branch (`git push origin feature-name`).
+5. Create a new pull request.
 
 ---
 
-## **Tech Stack**
-- **Frontend**: React.js
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB (via MongoDB Atlas)
-- **Blockchain**: Polygon Mumbai Testnet
-- **Smart Contracts**: Solidity (ERC-721 standard for NFTs)
-- **Storage**: IPFS (via NFT.Storage)
+### **Future Enhancements**
+
+- **Scalability**: Integrate other blockchain networks like **Polygon** for faster and cheaper transactions.
+- **Mobile App**: Develop a mobile app for easier access to the platform.
+- **Advanced Smart Contract Features**: Add features like rental extensions, damage penalties, and multi-item rentals.
 
 ---
 
-## **Setup Instructions**
+### **License**
 
-### **1. Clone the Repository**
-```bash
-git clone https://github.com/avanish-garg/P2P_RENTAL.git
-cd P2P_RENTAL
-2. Install Dependencies
-Install project dependencies for the blockchain environment:
-
-
-npm install
-3. Configure Environment Variables
-Create a .env file in the root directory with the following:
-
-plaintext
-Copy code
-MUMBAI_RPC_URL=https://rpc-mumbai.maticvigil.com
-PRIVATE_KEY=your_wallet_private_key_here
-POLYGONSCAN_API_KEY=your_polygonscan_api_key_here
-4. Compile the Smart Contract
-bash
-
-npx hardhat compile
-5. Deploy the Smart Contract
-To deploy the smart contract to Polygon Mumbai Testnet:
-
-bash
-
-npx hardhat run scripts/deploy.js --network mumbai
-Project Progress
-Day 1-2
- Set up blockchain environment.
- Deployed minimal ERC-721 NFT contract to Polygon Mumbai Testnet.
- Verified contract on PolygonScan.
- Tested minting NFTs locally using Hardhat.
-Next Steps
-Day 3-4: Implement rental logic in smart contracts (escrow, deposit, rental terms).
-Day 5: Integrate IPFS for metadata storage and test NFT minting with metadata.
-Day 6: Set up backend and API endpoints using Node.js and Express.
-Day 7-8: Build frontend components for item listing and rental interactions.
-Day 9: Perform full-stack end-to-end testing.
-Day 10: Deploy frontend, backend, and contracts to free hosting services.
-How to Contribute
-Contributions are welcome! Please follow these steps:
-
-Fork the repository.
-Create a feature branch (git checkout -b feature/your-feature-name).
-Commit your changes (git commit -m "Add your message").
-Push to the branch (git push origin feature/your-feature-name).
-Open a pull request.
-License
-This project is licensed under the MIT License.
-
-Contact
-For questions or feedback, please contact Avanish Garg --- gargavanish@gmail.com.
-
-yaml
-
-
----
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
